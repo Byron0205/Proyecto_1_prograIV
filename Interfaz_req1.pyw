@@ -3,25 +3,50 @@ import tkinter.font as tkfont
 import tkinter.messagebox as alert
 
 paddingForm= 10
-
+listaPacientes=[]
 
 global nom,ced
 
-def mensajePrueba():
-    global nombre, ced, tel, correo
-    nombre = txtNombre.get()
-    ced= txtIdentificacion.get()
-    tel = txtTelefono.get()
-    correo = txtCorreo.get()
+def on_select():
+    selected = pacientes.get(pacientes.curselection())
+    #falta funcion para ver datos al seleccionar el paciente
+    print(selected)
 
-    alert.showinfo(title="datos",message= f"identificacion: {ced} nombre: {nombre} telefono: {tel} correo: {correo}")
+def buscarPaciente(text, frm):
+    pacientes.select_clear(0, 'end')
+    for i in range(pacientes.size()):
+        if pacientes.get(i).startswith(text.capitalize()):
+            pacientes.activate(i)
+            pacientes.select_set(i, last=i)
+            break
+        elif pacientes.get(i).endswith(text.capitalize()):
+            pacientes.activate(i)
+            pacientes.select_set(i, last=i)
+            break
+        elif text.capitalize() in pacientes.get(i):
+            pacientes.activate(i)
+            pacientes.select_set(i, last=i)
+            break
+    else:
+        frm.grab_set()
+        alert.showinfo(title='NO FOUND', message='No existe un registro que coincida')
+
+        frm.grab_release()
+            
+
+def mensajePrueba(nom, id, telefono, correo, frm):
+    nombre = nom
+    ced= id
+    tel = telefono
+    mail = correo
+
+    alert.showinfo(title="datos",message= f"identificacion: {ced} nombre: {nombre} telefono: {tel} correo: {mail}")
 
     if alert.askokcancel(title="Confirmar", message="Desea guardar el paciente?"):
         #agregar proceso de guardado en lista de los registros
-        formPaciente.destroy()
+        frm.destroy()
 
 def nuevoPaciente():
-    global txtNombre, txtIdentificacion, txtTelefono, txtCorreo, formPaciente
     formPaciente = Toplevel(root)
     formPaciente.title("Registro Paciente")
     formPaciente.geometry("+{}+{}".format(root.winfo_x() + root.winfo_width(), root.winfo_y()))
@@ -59,10 +84,37 @@ def nuevoPaciente():
     txtCorreo.grid(column=2,row=4)
 
 
-    btnAceptar= Button(formPaciente, text="Aceptar", command=mensajePrueba, width=10)
+    btnAceptar= Button(formPaciente, text="Aceptar", command=lambda:mensajePrueba(txtNombre.get(),txtIdentificacion.get(), txtTelefono.get(),txtCorreo.get(),formPaciente), width=10)
     btnAceptar.grid(column=1, row=5, columnspan=2, pady=10)
     formPaciente.mainloop()
 
+
+def ConsultarPaciente():
+    global pacientes, txtBuscar
+    formConsultar = Toplevel(root)
+    formConsultar.title("Busqueda")
+
+    lblBuscar = Label(formConsultar, text='Digite el nombre o apellido',justify='center', font=fontText)
+    lblBuscar.grid(column=1,row=0)
+
+    txtBuscar = Entry(formConsultar, font=fontText)
+    txtBuscar.grid(column=1, row=1)
+
+    btnBuscar= Button(formConsultar, text='Buscar',command=lambda:buscarPaciente(txtBuscar.get(), formConsultar), width=10)
+    btnBuscar.grid(column=2,row=1,pady=10)
+
+    #lista de pacientes
+    pacientes = Listbox(formConsultar,font=fontText,justify='center')
+    pacientes.grid(row=2,column=1)
+
+    for p in listaPacientes:
+        pacientes.insert('end', p)
+
+    btnAceptar= Button(formConsultar, text="Aceptar", command=on_select, width=10, padx=10)
+    btnAceptar.grid(column=1, row=3, columnspan=2, pady=10)
+
+
+    formConsultar.mainloop()
 
 root= Tk()
 root.geometry("600x400")
@@ -83,15 +135,13 @@ btnNuevoPaciente.grid(column=2, row=1, padx=10)# agregar el padx aqui crea separ
 
 #falta command
 #consultar paciente
-btnRevisarPaciente= Button(root, text="Consultar Paciente", width=14, height=5, font=fontText, padx=10, border=5, borderwidth=3)
+btnRevisarPaciente= Button(root, text="Consultar Paciente", command=ConsultarPaciente, width=14, height=5, font=fontText, padx=10, border=5, borderwidth=3)
 btnRevisarPaciente.grid(column=3, row=1, padx=10)
 
 #falta command
 #Modificar Paciente
 btnRevisarPaciente= Button(root, text="Modificar Paciente", width=14, height=5, font=fontText, padx=10, border=5, borderwidth=3)
 btnRevisarPaciente.grid(column=4, row=1, padx=10)
-
-
 
 
 root.mainloop()
