@@ -10,7 +10,32 @@ paddingForm= 10
 #Almacen de datos de clientes
 listaPacientes=[]
 
-global nom,ced
+#Eliminar
+def Eliminar(self,DatoparaEliminar):
+    try:
+        for line in self:
+            if line == DatoparaEliminar: #Esto cambia dependiendo de como se ordene la lista
+                self.pop(line) 
+    except:
+        print("No se eliminó")
+
+#IMC
+def CalcularIMC(self,Peso,Altura,Edad):
+    #Adultos 20 o más años, Peso(kg) ÷ (Altura(cm))Elevado a 2 = Resultado
+    #Niños y Adolecentes 2 a 19 años, 
+
+    Resultado = Peso/(Altura**2)
+    
+    #Se llama la tabla para traer los datos y hacer la comparacion
+    DatosdeReferencia = 0
+    
+    if (Resultado < DatosdeReferencia):
+        pass
+        #Adultos
+        #Por debajo de 18.5	Bajo peso
+        #18.5 – 24.9	Normal
+        #25.0 – 29.9	Sobrepeso
+        #30.0 o más	Obesidad
 
 def on_select():
     selected = pacientes.get(pacientes.curselection())
@@ -138,7 +163,6 @@ lblTitulo.grid(column=2, row=0, pady=15, columnspan=3)
 btnNuevoPaciente= Button(root, text="Nuevo Paciente", command=nuevoPaciente, width=14, height=5, font=fontText, padx=10, border=5, borderwidth=3)
 btnNuevoPaciente.grid(column=2, row=1, padx=10)# agregar el padx aqui crea separacion con otros elementos
 
-#falta command
 #consultar paciente
 btnRevisarPaciente= Button(root, text="Consultar Paciente", command=ConsultarPaciente, width=14, height=5, font=fontText, padx=10, border=5, borderwidth=3)
 btnRevisarPaciente.grid(column=3, row=1, padx=10)
@@ -147,6 +171,5 @@ btnRevisarPaciente.grid(column=3, row=1, padx=10)
 #Modificar Paciente
 btnRevisarPaciente= Button(root, text="Modificar Paciente", width=14, height=5, font=fontText, padx=10, border=5, borderwidth=3)
 btnRevisarPaciente.grid(column=4, row=1, padx=10)
-
 
 root.mainloop()
