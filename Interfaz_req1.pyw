@@ -9,19 +9,31 @@ paddingForm= 10
 
 #datos de prueba
 p = Cliente(1234,'Byron','Sosa',56475647,'example@example.com',70.5,1.77,21,'M')
-p2= ClienteMenor(87654,'Juan','Perez',67894536,45326622,'example@example.com',45,1.36,14,'M')
+p2= ClienteMenor(987654,'Andres','Martinez',67894536,45326622,'example@example.com',45,1.36,20,'M')
 
 #Almacen de datos de clientes
 listaPacientes=[]
 listaPacientes.append(p)
 listaPacientes.append(p2)
 
+#Actualizar
+def Actualizar(self, id, DatosModificar):
+    try:
+        for line in listaPacientes:
+            if line == id: 
+                #DatosModificar = Cliente, ClienteMenor
+                line.remove(line)
+                listaPacientes.append(DatosModificar)
+
+    except:
+        alert.showinfo(title='Error', message='No es posible modificar el paciente')
+
 #Eliminar
-def Eliminar(self,DatoparaEliminar):
+def Eliminar(self,id):
     try:
         for line in self:
-            if line == DatoparaEliminar: #Esto cambia dependiendo de como se ordene la lista
-                self.pop(line) 
+            if line == id: #Esto cambia dependiendo de como se ordene la lista
+                self.remove(line) 
     except:
         alert.showinfo(title='Error', message='No es posible eliminar el paciente')
 
