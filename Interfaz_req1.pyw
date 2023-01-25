@@ -10,11 +10,14 @@ paddingForm= 10
 
 #datos de prueba
 p = Cliente(1234,'Byron','Sosa',56475647,'example@example.com',70.5,1.77,21,'M')
+
 p.IMC = '12.5 Normal'
 p2= ClienteMenor(87654,'Juan','Perez',67894536,'example@example.com',45,1.36,14,'M',45326622)
 p2.IMC= '14.7 Bajo'
 
 Sistema = Sistema()
+
+
 
 #Almacen de datos de clientes
 listaPacientes=[]
