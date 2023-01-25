@@ -4,49 +4,164 @@ import tkinter.messagebox as alert
 
 #Clase creada para trabajar datos
 from ClassCliente import Cliente, ClienteMenor
+from CR import Sistema
 
 paddingForm= 10
 
 #datos de prueba
 p = Cliente(1234,'Byron','Sosa',56475647,'example@example.com',70.5,1.77,21,'M')
-p2= ClienteMenor(87654,'Juan','Perez',67894536,45326622,'example@example.com',45,1.36,14,'M')
+p.IMC = '12.5 Normal'
+p2= ClienteMenor(87654,'Juan','Perez',67894536,'example@example.com',45,1.36,14,'M',45326622)
+p2.IMC= '14.7 Bajo'
+
+Sistema = Sistema()
 
 #Almacen de datos de clientes
 listaPacientes=[]
 listaPacientes.append(p)
 listaPacientes.append(p2)
 
-#Eliminar
-def Eliminar(self,DatoparaEliminar):
+
+def TablaIMC(datos,sexo, edad):
     try:
-        for line in self:
-            if line == DatoparaEliminar: #Esto cambia dependiendo de como se ordene la lista
-                self.pop(line) 
+        if(edad>=20):
+            if (datos < 18.5):
+                return "Bajo peso"
+            elif(datos <= 18.5 or datos >= 24.9 ):
+                return "Peso normal"
+            elif (datos<= 25.0 or datos >=29.9):
+                return "Sobrepeso"
+            elif (datos>=30.0):
+                return "Obesidad"
+        if (edad <=5 or edad >=10 and sexo == "F"):
+            if (datos <= 13.8):
+                return "Bajo peso"
+            elif(datos <= 13.9 or datos >= 16.8 ):
+                return "Peso normal"
+            elif (datos<= 16.9 or datos >=18.8):
+                return "Sobrepeso"
+            elif (datos>=18.9):
+                return "Obesidad"
+            if (edad <=10 or edad >=19 and sexo == "M"):
+                if (datos <= 16.4):
+                    return "Bajo peso"
+            elif(datos <= 18.6 or datos >= 24.7 ):
+                return "Peso normal"
+            elif (datos<= 24.8 or datos >=29.4):
+                return "Sobrepeso"
+            elif (datos>=29.5):
+                return "Obesidad"
     except:
-        alert.showinfo(title='Error', message='No es posible eliminar el paciente')
+        print("El dato a comparar no corresponde")
 
 #IMC
-def CalcularIMC(self,Peso,Altura,Edad):
+def CalcularIMC(Peso,Altura,Edad,Sexo):
     #Adultos 20 o más años, Peso(kg) ÷ (Altura(cm))Elevado a 2 = Resultado
     #Niños y Adolecentes 2 a 19 años, 
 
-    Resultado = Peso/(Altura**2)
+    Resultado = round(Peso/(Altura**2),2)
     
     #Se llama la tabla para traer los datos y hacer la comparacion
-    DatosdeReferencia = 0
-    
-    if (Resultado < DatosdeReferencia):
-        pass
+    dato = TablaIMC(Resultado,Sexo,Edad)
         #Adultos
         #Por debajo de 18.5	Bajo peso
         #18.5 – 24.9	Normal
         #25.0 – 29.9	Sobrepeso
         #30.0 o más	Obesidad
+    return f'{Resultado} / {dato}'
+
+def AgregarCliente(ced,nom, ape,tel,peso,alt,edad,sexo,correo='', telE=0):
+    if telE != 0:
+        per = ClienteMenor(ced,nom,ape,tel,correo,peso,alt,edad,sexo,telE)
+    else:
+        per = Cliente(ced,nom,ape,tel,correo,peso,alt,edad,sexo)
+        
+    per.IMC= CalcularIMC(Peso=peso,Altura= alt,Edad= edad,Sexo= sexo) 
+    listaPacientes.append(per)
+    alert.showinfo(title='Resultado', message="Usuario guardado con exito")
+
+def  mostrarPaciente(p):
+    formMostrar = Toplevel(root)
+    formMostrar.geometry("+{}+{}".format(root.winfo_x() + root.winfo_width(), root.winfo_y()))
+    formMostrar.title('Mostrar Datos')
+
+    lblIMC = Label(formMostrar, text='IMC',pady=paddingForm, font=fontText)
+    lblIMC.grid(column=1,row=0, padx=10)
+
+    txtIMC = Label(formMostrar, text=p.IMC)
+    txtIMC.grid(column=2, row=0, columnspan=2)
+
+    lblIdentificacion = Label(formMostrar, text="Identificacion", pady=paddingForm, font=fontText)
+    lblIdentificacion.grid(column=1,row=1,padx=10)
+
+    txtIdentificacion = Label(formMostrar, text=p.identificacion)
+    txtIdentificacion.grid(column=2,row=1,columnspan=2)
+
+    lblNombre = Label(formMostrar, text="Nombre", pady=paddingForm, font=fontText)
+    lblNombre.grid(column=1,row=2,padx=10)
+
+    txtNombre= Label(formMostrar, text=p.nombre)
+    txtNombre.grid(column=2, row=2, padx=5,columnspan=2)
+    
+    lblapellido = Label(formMostrar, text="Apellidos", pady=paddingForm, font=fontText)
+    lblapellido.grid(column=1,row=3,padx=10)
+
+    txtapellido= Label(formMostrar, text=p.apellido)
+    txtapellido.grid(column=2, row=3, padx=5,columnspan=2)
+
+    lblTelefono= Label(formMostrar, text="Telefono",pady=paddingForm, font=fontText)
+    lblTelefono.grid(column=1,row=4)
+
+    txtTelefono = Label(formMostrar, text=p.telefono)
+    txtTelefono.grid(column=2,row=4,columnspan=2)
+    
+    lblCorreo= Label(formMostrar, text="Correo",pady=paddingForm, font=fontText)
+    lblCorreo.grid(column=1,row=5)
+
+    txtCorreo = Label(formMostrar, text=p.correo)
+    txtCorreo.grid(column=2,row=5,columnspan=2)
+
+    lblpeso = Label(formMostrar, text="Peso", pady=paddingForm, font=fontText)
+    lblpeso.grid(column=1,row=6,padx=10)
+
+    txtpeso= Label(formMostrar, text=p.peso)
+    txtpeso.grid(column=2, row=6, padx=5,columnspan=2)
+
+    lblaltura = Label(formMostrar, text="Altura", pady=paddingForm, font=fontText)
+    lblaltura.grid(column=1,row=7,padx=10)
+
+    txtaltura= Label(formMostrar, text=p.altura)
+    txtaltura.grid(column=2, row=7, padx=5,columnspan=2)
+
+    lbledad = Label(formMostrar, text="Edad", pady=paddingForm, font=fontText)
+    lbledad.grid(column=1,row=8,padx=10)
+
+    txtedad= Label(formMostrar, text=p.edad)
+    txtedad.grid(column=2, row=8, padx=5,columnspan=2)
+
+    lblsexo = Label(formMostrar, text='Sexo', pady=paddingForm, font=fontText)
+    lblsexo.grid(column=1, row=9)
+
+    txtsexo = Label(formMostrar, text=p.sexo)
+    txtsexo.grid(column=2, row=9,padx=5,columnspan=2)
+
+
+    if hasattr(p,'telefonoP'):
+        lbltelEncargado = Label(formMostrar, text='Telefono Encargado', font=fontText, pady=paddingForm)
+        lbltelEncargado.grid(column=1,row=10)
+
+        txttelEncargado= Label(formMostrar, text=p.telefonoP)
+        txttelEncargado.grid(column=2,row=10, columnspan=2)
+        
+
+    formMostrar.mainloop()
 
 def seleccionPacienteConsultar():
     selected = pacientes.get(pacientes.curselection())
     #falta funcion para ver datos al seleccionar el paciente
-    print(selected)
+    for i in range(pacientes.size()):
+        if pacientes.get(i) == selected:
+            mostrarPaciente(listaPacientes[i])
 
 def buscarPaciente(text, frm):
     pacientes.select_clear(0, 'end')
@@ -68,7 +183,8 @@ def buscarPaciente(text, frm):
         alert.showinfo(title='NO FOUND', message='No existe un registro que coincida')
 
         frm.grab_release()
-            
+
+
 
 def ModificarPaciente(p):
 
@@ -171,17 +287,6 @@ def ModificarPaciente(p):
         btnEliminar.grid(column=1, row=12, columnspan=3, pady=10)
     formModificar.mainloop()
 
-def mensajePrueba(nom, id, telefono, correo, frm):
-    nombre = nom
-    ced= id
-    tel = telefono
-    mail = correo
-
-    alert.showinfo(title="datos",message= f"identificacion: {ced} nombre: {nombre} telefono: {tel} correo: {mail}")
-
-    if alert.askokcancel(title="Confirmar", message="Desea guardar el paciente?"):
-        #agregar proceso de guardado en lista de los registros
-        frm.destroy()
 
 def nuevoPaciente():
     resp=alert.askquestion(title='Tipo Paciente', message='¿Va a agregar un menor?')
@@ -258,17 +363,38 @@ def nuevoPaciente():
     #definir valor inicial marcado
     gender.set('M')
     
-    btnAceptar= Button(formPaciente, text="Aceptar", command=lambda:mensajePrueba(txtNombre.get(),txtIdentificacion.get(), txtTelefono.get(),txtCorreo.get(),formPaciente), width=10)
+    btnAceptar= Button(formPaciente, text="Aceptar", command=lambda:AgregarCliente(
+    ced= txtIdentificacion.get(),
+    nom= txtNombre.get(),
+    ape= txtapellido.get(), 
+    tel= txtTelefono.get(),
+    correo= txtCorreo.get(),
+    peso= float(txtpeso.get()),
+    alt= float(txtaltura.get()),
+    edad= int(txtedad.get()),
+    sexo= gender.get()), width=10)
     btnAceptar.grid(column=1, row=10, columnspan=3, pady=10)
 
     if resp == 'yes':
+        
         lbltelEncargado = Label(formPaciente, text='Telefono Encargado', font=fontText, pady=paddingForm)
         lbltelEncargado.grid(column=1,row=10)
 
         txttelEncargado= Entry(formPaciente, font=fontText)
         txttelEncargado.grid(column=2,row=10, columnspan=2)
-
-        btnAceptar.grid(column=1, row=11, columnspan=3, pady=10)
+        btnAceptar.grid_forget()
+        btnAceptarM= Button(formPaciente, text="Aceptar", command=lambda:AgregarCliente(
+    ced=txtIdentificacion.get(),
+    nom= txtNombre.get(),
+    ape= txtapellido.get(), 
+    tel= txtTelefono.get(),
+    correo= txtCorreo.get(),
+    peso= txtpeso.get(),
+    alt= txtaltura.get(),
+    edad= txtedad.get(),
+    sexo= gender.get(),
+    telE= txttelEncargado.get()), width=10)
+        btnAceptarM.grid(column=1, row=11, columnspan=3, pady=10)
     formPaciente.mainloop()
 
 
@@ -291,7 +417,8 @@ def ConsultarPaciente():
     pacientes.grid(row=2,column=1)
 
     for p in listaPacientes:
-        pacientes.insert('end', p.nombre +" "+p.apellido)
+        pacientes.insert('end',  p.nombre +" "+p.apellido)
+        
 
     btnAceptar= Button(formConsultar, text="Aceptar", command=seleccionPacienteConsultar, width=10, padx=10)
     btnAceptar.grid(column=1, row=3, columnspan=2, pady=10)

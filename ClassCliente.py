@@ -10,11 +10,11 @@ class Cliente:
         self.altura = altura
         self.edad = edad
         self.sexo = sexo
-    
+        self.IMC = 0
 
 class ClienteMenor():
     #constructor para los niños
-    def __init__(self, identificacion, nombre, apellido, telefono, telefonoP, correo, peso, altura, edad, sexo):
+    def __init__(self, identificacion, nombre, apellido, telefono, correo, peso, altura, edad, sexo,telefonoP):
         self.identificacion = identificacion
         self.nombre = nombre
         self.apellido = apellido
@@ -25,3 +25,4 @@ class ClienteMenor():
         self.altura = altura
         self.edad = edad
         self.sexo = sexo
+        self.IMC = 0
