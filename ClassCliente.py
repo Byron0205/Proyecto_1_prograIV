@@ -12,13 +12,12 @@ class Cliente:
         self.sexo = sexo
     
     #constructor para los niños
-    def __init__(self, identificacion, nombre, apellido, telefonoM, telefonoP, correoM, correoP, peso, altura, edad, sexo):
+    def __init__(self, identificacion, nombre, apellido, telefonoM, telefonoP, correoP, peso, altura, edad, sexo):
         self.identificacion = identificacion
         self.nombre = nombre
         self.apellido = apellido
         self.telefonoM = telefonoM
         self.telefonoP = telefonoP
-        self.correoM = correoM
         self.correoP = correoP
         self.peso = peso
         self.altura = altura

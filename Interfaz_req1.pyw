@@ -17,7 +17,7 @@ def Eliminar(self,DatoparaEliminar):
             if line == DatoparaEliminar: #Esto cambia dependiendo de como se ordene la lista
                 self.pop(line) 
     except:
-        print("No se eliminó")
+        alert.showinfo(title='Error', message='No es posible eliminar el paciente')
 
 #IMC
 def CalcularIMC(self,Peso,Altura,Edad):
@@ -77,6 +77,8 @@ def mensajePrueba(nom, id, telefono, correo, frm):
         frm.destroy()
 
 def nuevoPaciente():
+    resp=alert.askquestion(title='Tipo Paciente', message='¿Va a agregar un menor?')
+
     formPaciente = Toplevel(root)
     formPaciente.title("Registro Paciente")
     formPaciente.geometry("+{}+{}".format(root.winfo_x() + root.winfo_width(), root.winfo_y()))
@@ -90,32 +92,76 @@ def nuevoPaciente():
     lblIdentificacion.grid(column=1,row=1,padx=10)
 
     txtIdentificacion = Entry(formPaciente,font=fontText)#colocar el font a los entry aumenta el tamano
-    txtIdentificacion.grid(column=2,row=1)
+    txtIdentificacion.grid(column=2,row=1,columnspan=2)
 
 
     lblNombre = Label(formPaciente, text="Nombre", pady=paddingForm, font=fontText)
     lblNombre.grid(column=1,row=2,padx=10)
 
     txtNombre= Entry(formPaciente, font=fontText)
-    txtNombre.grid(column=2, row=2, padx=5)
+    txtNombre.grid(column=2, row=2, padx=5,columnspan=2)
     
+    lblapellido = Label(formPaciente, text="Apellidos", pady=paddingForm, font=fontText)
+    lblapellido.grid(column=1,row=3,padx=10)
 
+    txtapellido= Entry(formPaciente, font=fontText)
+    txtapellido.grid(column=2, row=3, padx=5,columnspan=2)
 
     lblTelefono= Label(formPaciente, text="Telefono",pady=paddingForm, font=fontText)
-    lblTelefono.grid(column=1,row=3)
+    lblTelefono.grid(column=1,row=4)
 
     txtTelefono = Entry(formPaciente, font=fontText)
-    txtTelefono.grid(column=2,row=3)
+    txtTelefono.grid(column=2,row=4,columnspan=2)
     
     lblCorreo= Label(formPaciente, text="Correo",pady=paddingForm, font=fontText)
-    lblCorreo.grid(column=1,row=4)
+    lblCorreo.grid(column=1,row=5)
 
     txtCorreo = Entry(formPaciente, font=fontText)
-    txtCorreo.grid(column=2,row=4)
+    txtCorreo.grid(column=2,row=5,columnspan=2)
 
+    lblpeso = Label(formPaciente, text="Peso", pady=paddingForm, font=fontText)
+    lblpeso.grid(column=1,row=6,padx=10)
 
+    txtpeso= Entry(formPaciente, font=fontText)
+    txtpeso.grid(column=2, row=6, padx=5,columnspan=2)
+
+    lblaltura = Label(formPaciente, text="Altura", pady=paddingForm, font=fontText)
+    lblaltura.grid(column=1,row=7,padx=10)
+
+    txtaltura= Entry(formPaciente, font=fontText)
+    txtaltura.grid(column=2, row=7, padx=5,columnspan=2)
+
+    lbledad = Label(formPaciente, text="Edad", pady=paddingForm, font=fontText)
+    lbledad.grid(column=1,row=8,padx=10)
+
+    txtedad= Entry(formPaciente, font=fontText)
+    txtedad.grid(column=2, row=8, padx=5,columnspan=2)
+
+    lblsexo = Label(formPaciente, text='Sexo', pady=paddingForm, font=fontText)
+    lblsexo.grid(column=1, row=9)
+
+    #variable radiobuton
+    gender = StringVar()
+    g1 = Radiobutton(formPaciente,text='M', variable=gender, value='M')
+    g2 = Radiobutton(formPaciente,text='F', variable=gender, value='F')
+
+    g1.grid(column=2,row=9)
+    g2.grid(column=3, row=9)
+
+    #definir valor inicial marcado
+    gender.set('M')
+    
     btnAceptar= Button(formPaciente, text="Aceptar", command=lambda:mensajePrueba(txtNombre.get(),txtIdentificacion.get(), txtTelefono.get(),txtCorreo.get(),formPaciente), width=10)
-    btnAceptar.grid(column=1, row=5, columnspan=2, pady=10)
+    btnAceptar.grid(column=1, row=10, columnspan=3, pady=10)
+
+    if resp == 'yes':
+        lbltelEncargado = Label(formPaciente, text='Telefono Encargado', font=fontText, pady=paddingForm)
+        lbltelEncargado.grid(column=1,row=10)
+
+        txttelEncargado= Entry(formPaciente, font=fontText)
+        txttelEncargado.grid(column=2,row=10, columnspan=2)
+
+        btnAceptar.grid(column=1, row=11, columnspan=3, pady=10)
     formPaciente.mainloop()
 
 
@@ -169,7 +215,7 @@ btnRevisarPaciente.grid(column=3, row=1, padx=10)
 
 #falta command
 #Modificar Paciente
-btnRevisarPaciente= Button(root, text="Modificar Paciente", width=14, height=5, font=fontText, padx=10, border=5, borderwidth=3)
-btnRevisarPaciente.grid(column=4, row=1, padx=10)
+btnModificarPaciente= Button(root, text="Modificar Paciente", width=14, height=5, font=fontText, padx=10, border=5, borderwidth=3)
+btnModificarPaciente.grid(column=4, row=1, padx=10)
 
 root.mainloop()
