@@ -3,12 +3,18 @@ import tkinter.font as tkfont
 import tkinter.messagebox as alert
 
 #Clase creada para trabajar datos
-from ClassCliente import Cliente
+from ClassCliente import Cliente, ClienteMenor
 
 paddingForm= 10
 
+#datos de prueba
+p = Cliente(1234,'Byron','Sosa',56475647,'example@example.com',70.5,1.77,21,'M')
+p2= ClienteMenor(87654,'Juan','Perez',67894536,45326622,'example@example.com',45,1.36,14,'M')
+
 #Almacen de datos de clientes
 listaPacientes=[]
+listaPacientes.append(p)
+listaPacientes.append(p2)
 
 #Eliminar
 def Eliminar(self,DatoparaEliminar):
@@ -37,7 +43,7 @@ def CalcularIMC(self,Peso,Altura,Edad):
         #25.0 – 29.9	Sobrepeso
         #30.0 o más	Obesidad
 
-def on_select():
+def seleccionPacienteConsultar():
     selected = pacientes.get(pacientes.curselection())
     #falta funcion para ver datos al seleccionar el paciente
     print(selected)
@@ -63,6 +69,107 @@ def buscarPaciente(text, frm):
 
         frm.grab_release()
             
+
+def ModificarPaciente(p):
+
+    ced = StringVar(value=p.identificacion)
+    nom = StringVar(value=p.nombre)
+    ape = StringVar(value=p.apellido)
+    tel= StringVar(value=p.telefono)
+    mail = StringVar(value=p.correo)
+    peso = StringVar(value=p.peso)
+    alt = StringVar(value=p.altura)
+    edad = StringVar(value=p.edad)
+    gender = StringVar(value=p.sexo)
+
+    formModificar = Toplevel(root)
+    formModificar.title("Actualizar Datos")
+    formModificar.geometry("+{}+{}".format(root.winfo_x() + root.winfo_width(), root.winfo_y()))
+
+
+    lblTitulo = Label(formModificar, text="Datos", font=fontTitle, justify=CENTER)
+    lblTitulo.grid(column=1,row=0, columnspan=2,padx=10)
+
+
+    lblIdentificacion = Label(formModificar, text="Identificacion", pady=paddingForm, font=fontText)
+    lblIdentificacion.grid(column=1,row=1,padx=10)
+
+    txtIdentificacion = Entry(formModificar,font=fontText, textvariable=ced)#colocar el font a los entry aumenta el tamano
+    txtIdentificacion.grid(column=2,row=1,columnspan=2)
+
+
+    lblNombre = Label(formModificar, text="Nombre", pady=paddingForm, font=fontText)
+    lblNombre.grid(column=1,row=2,padx=10)
+
+    txtNombre= Entry(formModificar, font=fontText, textvariable=nom)
+    txtNombre.grid(column=2, row=2, padx=5,columnspan=2)
+    
+    lblapellido = Label(formModificar, text="Apellidos", pady=paddingForm, font=fontText)
+    lblapellido.grid(column=1,row=3,padx=10)
+
+    txtapellido= Entry(formModificar, font=fontText, textvariable=ape)
+    txtapellido.grid(column=2, row=3, padx=5,columnspan=2)
+
+    lblTelefono= Label(formModificar, text="Telefono",pady=paddingForm, font=fontText)
+    lblTelefono.grid(column=1,row=4)
+
+    txtTelefono = Entry(formModificar, font=fontText, textvariable=tel)
+    txtTelefono.grid(column=2,row=4,columnspan=2)
+    
+    lblCorreo= Label(formModificar, text="Correo",pady=paddingForm, font=fontText)
+    lblCorreo.grid(column=1,row=5)
+
+    txtCorreo = Entry(formModificar, font=fontText, textvariable=mail)
+    txtCorreo.grid(column=2,row=5,columnspan=2)
+
+    lblpeso = Label(formModificar, text="Peso", pady=paddingForm, font=fontText)
+    lblpeso.grid(column=1,row=6,padx=10)
+
+    txtpeso= Entry(formModificar, font=fontText, textvariable=peso)
+    txtpeso.grid(column=2, row=6, padx=5,columnspan=2)
+
+    lblaltura = Label(formModificar, text="Altura", pady=paddingForm, font=fontText)
+    lblaltura.grid(column=1,row=7,padx=10)
+
+    txtaltura= Entry(formModificar, font=fontText, textvariable=alt)
+    txtaltura.grid(column=2, row=7, padx=5,columnspan=2)
+
+    lbledad = Label(formModificar, text="Edad", pady=paddingForm, font=fontText)
+    lbledad.grid(column=1,row=8,padx=10)
+
+    txtedad= Entry(formModificar, font=fontText, textvariable=edad)
+    txtedad.grid(column=2, row=8, padx=5,columnspan=2)
+
+    lblsexo = Label(formModificar, text='Sexo', pady=paddingForm, font=fontText)
+    lblsexo.grid(column=1, row=9)
+
+    #variable radiobuton
+    g1 = Radiobutton(formModificar,text='M', variable=gender, value='M')
+    g2 = Radiobutton(formModificar,text='F', variable=gender, value='F')
+
+    g1.grid(column=2,row=9)
+    g2.grid(column=3, row=9)
+
+    
+    btnModificar= Button(formModificar, text="Modificar", command=lambda:mensajePrueba(txtNombre.get(),txtIdentificacion.get(), txtTelefono.get(),txtCorreo.get(),formModificar), width=12, height=2, border=1)
+    btnModificar.grid(column=1, row=10, columnspan=3, pady=10)
+
+    #falta command
+    btnEliminar = Button(formModificar, text='Eliminar', width=15, height=2, border=1)
+    btnEliminar.grid(column=1, row=11, columnspan=3, pady=10)
+
+    #verificar si existe el atributo en el objeto
+    if hasattr(p, 'telefonoP'):
+        lbltelEncargado = Label(formModificar, text='Telefono Encargado', font=fontText, pady=paddingForm)
+        lbltelEncargado.grid(column=1,row=10)
+
+        telEncargado = StringVar(value=p.telefonoP)
+        txttelEncargado= Entry(formModificar, font=fontText, textvariable=telEncargado)
+        txttelEncargado.grid(column=2,row=10, columnspan=2)
+
+        btnModificar.grid(column=1, row=11, columnspan=3, pady=10)
+        btnEliminar.grid(column=1, row=12, columnspan=3, pady=10)
+    formModificar.mainloop()
 
 def mensajePrueba(nom, id, telefono, correo, frm):
     nombre = nom
@@ -184,11 +291,10 @@ def ConsultarPaciente():
     pacientes.grid(row=2,column=1)
 
     for p in listaPacientes:
-        pacientes.insert('end', p)
+        pacientes.insert('end', p.nombre +" "+p.apellido)
 
-    btnAceptar= Button(formConsultar, text="Aceptar", command=on_select, width=10, padx=10)
+    btnAceptar= Button(formConsultar, text="Aceptar", command=seleccionPacienteConsultar, width=10, padx=10)
     btnAceptar.grid(column=1, row=3, columnspan=2, pady=10)
-
 
     formConsultar.mainloop()
 
@@ -213,9 +319,9 @@ btnNuevoPaciente.grid(column=2, row=1, padx=10)# agregar el padx aqui crea separ
 btnRevisarPaciente= Button(root, text="Consultar Paciente", command=ConsultarPaciente, width=14, height=5, font=fontText, padx=10, border=5, borderwidth=3)
 btnRevisarPaciente.grid(column=3, row=1, padx=10)
 
-#falta command
+#falta parametro command
 #Modificar Paciente
-btnModificarPaciente= Button(root, text="Modificar Paciente", width=14, height=5, font=fontText, padx=10, border=5, borderwidth=3)
+btnModificarPaciente= Button(root, text="Modificar Paciente",command=lambda:ModificarPaciente(p2), width=14, height=5, font=fontText, padx=10, border=5, borderwidth=3)
 btnModificarPaciente.grid(column=4, row=1, padx=10)
 
 root.mainloop()
