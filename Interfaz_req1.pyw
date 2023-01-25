@@ -2,7 +2,12 @@ from tkinter import *
 import tkinter.font as tkfont
 import tkinter.messagebox as alert
 
+#Clase creada para trabajar datos
+from ClassCliente import Cliente
+
 paddingForm= 10
+
+#Almacen de datos de clientes
 listaPacientes=[]
 
 global nom,ced
@@ -145,104 +150,3 @@ btnRevisarPaciente.grid(column=4, row=1, padx=10)
 
 
 root.mainloop()
-
-
-class Cliente:    
-    #constructor para los Adultos
-    def __init__(self, identificacion, nombre, apellido, telefono, correo, peso, altura, edad, sexo):
-        self.identificacion = identificacion
-        self.nombre = nombre
-        self.apellido = apellido
-        self.telefono = telefono
-        self.correo = correo
-        self.peso = peso
-        self.altura = altura
-        self.edad = edad
-        self.sexo = sexo
-    
-    #constructor para los Jovenes
-    def __init__(self, identificacion, nombre, apellido, telefono, correo, peso, altura, edad, sexo):
-        self.identificacion = identificacion
-        self.nombre = nombre
-        self.apellido = apellido
-        self.telefono = telefono
-        self.correo = correo
-        self.peso = peso
-        self.altura = altura
-        self.edad = edad
-        self.sexo = sexo    
-    
-       #constructor para los niños
-    def __init__(self, identificacion, nombre, apellido, telefonoM, telefonoP, correoM, correoP, peso, altura, edad, sexo):
-        self.identificacion = identificacion
-        self.nombre = nombre
-        self.apellido = apellido
-        self.telefonoM = telefonoM
-        self.telefonoP = telefonoP
-        self.correoM = correoM
-        self.correoP = correoP
-        self.peso = peso
-        self.altura = altura
-        self.edad = edad
-        self.sexo = sexo    
-    
-    #Zona de getter y setter
-    def getIdentificacion(self):
-        return self.identificacion
-    def setIdentifacion(self, id):
-        self.identificacion = id
-    
-    def getNombre(self):
-        return self.nombre
-    def setNombre(self, nombre):
-        self.nombre = nombre
-        
-    def getApellido(self):
-        return self.apellido
-    def setApellido(self, apellido):
-        self.apellido = apellido
-       
-    def getTelefono(self):
-        return self.telefono
-    def setTelefono(self, telefono):
-        self.telefono = telefono
-        
-    def getTelefono_Madre(self):
-        return self.telefonoM
-    def setTelefono_Madre(self, telefM):
-        self.telefonoM = telefM
-        
-    def getTelefono_Padre(self):
-        return self.telefonoP
-    def setTelefono_Padre(self, telefP):
-        self.telefonoP = telefP    
-        
-    def getCorreo_Madre(self):
-        return self.correoM
-    def setCorreo_Madre(self, correoM):
-        self.correoM = correoM 
-    
-    def getCorreo_Padre(self):
-        return self.correoP
-    def setCorreo_Padre(self, correoP):
-        self.correoP = correoP
-    
-    def getPeso(self):
-        return self.peso
-    def setPeso(self, peso):
-        self.peso = peso   
-    
-    def getAltura(self):
-        return self.altura
-    def setAltura(self, altura):
-        self.altura = altura
-        
-    def getEdad(self):
-        return self.edad
-    def setEdad(self, edad):
-        self.edad = edad    
-    
-    def getSexo(self):
-        return self.sexo
-    def setSexo(self, sexo):
-        self.sexo = sexo
