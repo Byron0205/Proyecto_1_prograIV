@@ -4,12 +4,10 @@ import tkinter.messagebox as alert
 
 #Clase creada para trabajar datos
 from ClassCliente import Cliente, ClienteMenor
-
 paddingForm= 10
 
 #datos de prueba
 p = Cliente(1234,'Byron','Sosa',56475647,'example@example.com',70.5,1.77,21,'M')
-
 p.IMC = '12.5 Normal'
 p2= ClienteMenor(87654,'Juan','Perez',67894536,'example@example.com',45,1.36,14,'M',45326622)
 p2.IMC= '14.7 Bajo'
@@ -70,15 +68,18 @@ def CalcularIMC(Peso,Altura,Edad,Sexo):
     return f'{Resultado} / {dato}'
 
 def AgregarCliente(ced,nom, ape,tel,peso,alt,edad,sexo,frm,correo='', telE=0):
-    if telE != 0:
-        per = ClienteMenor(ced,nom,ape,tel,correo,peso,alt,edad,sexo,telE)
+    if nom == '' or peso == 0 or alt == 0 or edad == 0 or tel == 0:
+        alert.showerror(title='Compos Incompletos',message='Debe completar minimo los campos de nombre,telefono,peso, altura y edad')
     else:
-        per = Cliente(ced,nom,ape,tel,correo,peso,alt,edad,sexo)
-        
-    per.IMC= CalcularIMC(Peso=peso,Altura= alt,Edad= edad,Sexo= sexo) 
-    listaPacientes.append(per)
-    alert.showinfo(title='Resultado', message="Usuario guardado con exito")
-    frm.destroy()
+        if telE != 0:
+            per = ClienteMenor(ced,nom,ape,tel,correo,peso,alt,edad,sexo,telE)
+        else:
+            per = Cliente(ced,nom,ape,tel,correo,peso,alt,edad,sexo)
+            
+        per.IMC= CalcularIMC(Peso=peso,Altura= alt,Edad= edad,Sexo= sexo) 
+        listaPacientes.append(per)
+        alert.showinfo(title='Resultado', message="Usuario guardado con exito")
+        frm.destroy()
 
 def  mostrarPaciente(p):
     formMostrar = Toplevel(root)
@@ -199,6 +200,7 @@ def seleccionPacienteConsultar():
         if pacientes.get(i) == selected:
             mostrarPaciente(listaPacientes[i])
 
+#metodo buscar en la lista de pacientes
 def buscarPaciente(text, frm):
     pacientes.select_clear(0, 'end')
     for i in range(pacientes.size()):
@@ -445,7 +447,6 @@ def nuevoPaciente():
 #form
 def ConsultarPaciente():
     global pacientes, txtBuscar
-    form = ''
     formConsultar = Toplevel(root)
     formConsultar.title("Busqueda")
 
@@ -471,9 +472,9 @@ def ConsultarPaciente():
 
     formConsultar.mainloop()
 
+#form
 def ConsultarPacienteMod():
     global pacientes, txtBuscar
-    form = ''
     formConsultar = Toplevel(root)
     formConsultar.title("Busqueda")
 
@@ -499,6 +500,7 @@ def ConsultarPacienteMod():
 
     formConsultar.mainloop()
 
+#definicion form principal
 root= Tk()
 root.geometry("600x400")
 root.resizable(False,False)
@@ -520,8 +522,7 @@ btnNuevoPaciente.grid(column=2, row=1, padx=10)# agregar el padx aqui crea separ
 btnRevisarPaciente= Button(root, text="Consultar Paciente", command=ConsultarPaciente, width=14, height=5, font=fontText, padx=10, border=5, borderwidth=3)
 btnRevisarPaciente.grid(column=3, row=1, padx=10)
 
-#falta parametro command
-#Modificar Paciente
+#Modificar / eliminar Paciente
 btnModificarPaciente= Button(root, text="Modificar Paciente",command=ConsultarPacienteMod, width=14, height=5, font=fontText, padx=10, border=5, borderwidth=3)
 btnModificarPaciente.grid(column=4, row=1, padx=10)
 
