@@ -4,7 +4,6 @@ import tkinter.messagebox as alert
 
 #Clase creada para trabajar datos
 from ClassCliente import Cliente, ClienteMenor
-from CR import Sistema
 
 paddingForm= 10
 
@@ -14,9 +13,6 @@ p = Cliente(1234,'Byron','Sosa',56475647,'example@example.com',70.5,1.77,21,'M')
 p.IMC = '12.5 Normal'
 p2= ClienteMenor(87654,'Juan','Perez',67894536,'example@example.com',45,1.36,14,'M',45326622)
 p2.IMC= '14.7 Bajo'
-
-Sistema = Sistema()
-
 
 
 #Almacen de datos de clientes
@@ -159,6 +155,14 @@ def  mostrarPaciente(p):
 
     formMostrar.mainloop()
 
+def SeleccionPacienteModificar():
+    selected = pacientes.get(pacientes.curselection())
+    #falta funcion para ver datos al seleccionar el paciente
+    for i in range(pacientes.size()):
+        if pacientes.get(i) == selected:
+            ModificarPaciente(listaPacientes[i])
+
+
 def seleccionPacienteConsultar():
     selected = pacientes.get(pacientes.curselection())
     #falta funcion para ver datos al seleccionar el paciente
@@ -187,8 +191,7 @@ def buscarPaciente(text, frm):
 
         frm.grab_release()
 
-
-
+#form
 def ModificarPaciente(p):
 
     ced = StringVar(value=p.identificacion)
@@ -269,8 +272,8 @@ def ModificarPaciente(p):
     g1.grid(column=2,row=9)
     g2.grid(column=3, row=9)
 
-    
-    btnModificar= Button(formModificar, text="Modificar", command=lambda:mensajePrueba(txtNombre.get(),txtIdentificacion.get(), txtTelefono.get(),txtCorreo.get(),formModificar), width=12, height=2, border=1)
+    #falta command
+    btnModificar= Button(formModificar, text="Modificar", width=12, height=2, border=1)
     btnModificar.grid(column=1, row=10, columnspan=3, pady=10)
 
     #falta command
@@ -290,7 +293,7 @@ def ModificarPaciente(p):
         btnEliminar.grid(column=1, row=12, columnspan=3, pady=10)
     formModificar.mainloop()
 
-
+#form
 def nuevoPaciente():
     resp=alert.askquestion(title='Tipo Paciente', message='¿Va a agregar un menor?')
 
@@ -370,7 +373,7 @@ def nuevoPaciente():
     ced= txtIdentificacion.get(),
     nom= txtNombre.get(),
     ape= txtapellido.get(), 
-    tel= txtTelefono.get(),
+    tel= int(txtTelefono.get()),
     correo= txtCorreo.get(),
     peso= float(txtpeso.get()),
     alt= float(txtaltura.get()),
@@ -390,19 +393,20 @@ def nuevoPaciente():
     ced=txtIdentificacion.get(),
     nom= txtNombre.get(),
     ape= txtapellido.get(), 
-    tel= txtTelefono.get(),
+    tel= int(txtTelefono.get()),
     correo= txtCorreo.get(),
-    peso= txtpeso.get(),
-    alt= txtaltura.get(),
-    edad= txtedad.get(),
+    peso= float(txtpeso.get()),
+    alt= float(txtaltura.get()),
+    edad= int(txtedad.get()),
     sexo= gender.get(),
-    telE= txttelEncargado.get()), width=10)
+    telE= int(txttelEncargado.get())), width=10)
         btnAceptarM.grid(column=1, row=11, columnspan=3, pady=10)
     formPaciente.mainloop()
 
-
+#form
 def ConsultarPaciente():
     global pacientes, txtBuscar
+    form = ''
     formConsultar = Toplevel(root)
     formConsultar.title("Busqueda")
 
@@ -424,6 +428,34 @@ def ConsultarPaciente():
         
 
     btnAceptar= Button(formConsultar, text="Aceptar", command=seleccionPacienteConsultar, width=10, padx=10)
+    btnAceptar.grid(column=1, row=3, columnspan=2, pady=10)
+
+    formConsultar.mainloop()
+
+def ConsultarPacienteMod():
+    global pacientes, txtBuscar
+    form = ''
+    formConsultar = Toplevel(root)
+    formConsultar.title("Busqueda")
+
+    lblBuscar = Label(formConsultar, text='Digite el nombre o apellido',justify='center', font=fontText)
+    lblBuscar.grid(column=1,row=0)
+
+    txtBuscar = Entry(formConsultar, font=fontText)
+    txtBuscar.grid(column=1, row=1)
+
+    btnBuscar= Button(formConsultar, text='Buscar',command=lambda:buscarPaciente(txtBuscar.get(), formConsultar), width=10)
+    btnBuscar.grid(column=2,row=1,pady=10)
+
+    #lista de pacientes
+    pacientes = Listbox(formConsultar,font=fontText,justify='center')
+    pacientes.grid(row=2,column=1)
+
+    for p in listaPacientes:
+        pacientes.insert('end',  p.nombre +" "+p.apellido)
+        
+
+    btnAceptar= Button(formConsultar, text="Aceptar", command=SeleccionPacienteModificar, width=10, padx=10)
     btnAceptar.grid(column=1, row=3, columnspan=2, pady=10)
 
     formConsultar.mainloop()
@@ -451,7 +483,7 @@ btnRevisarPaciente.grid(column=3, row=1, padx=10)
 
 #falta parametro command
 #Modificar Paciente
-btnModificarPaciente= Button(root, text="Modificar Paciente",command=lambda:ModificarPaciente(p2), width=14, height=5, font=fontText, padx=10, border=5, borderwidth=3)
+btnModificarPaciente= Button(root, text="Modificar Paciente",command=ConsultarPacienteMod, width=14, height=5, font=fontText, padx=10, border=5, borderwidth=3)
 btnModificarPaciente.grid(column=4, row=1, padx=10)
 
 root.mainloop()
