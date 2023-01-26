@@ -69,7 +69,7 @@ def CalcularIMC(Peso,Altura,Edad,Sexo):
         #30.0 o más	Obesidad
     return f'{Resultado} / {dato}'
 
-def AgregarCliente(ced,nom, ape,tel,peso,alt,edad,sexo,correo='', telE=0):
+def AgregarCliente(ced,nom, ape,tel,peso,alt,edad,sexo,frm,correo='', telE=0):
     if telE != 0:
         per = ClienteMenor(ced,nom,ape,tel,correo,peso,alt,edad,sexo,telE)
     else:
@@ -78,6 +78,7 @@ def AgregarCliente(ced,nom, ape,tel,peso,alt,edad,sexo,correo='', telE=0):
     per.IMC= CalcularIMC(Peso=peso,Altura= alt,Edad= edad,Sexo= sexo) 
     listaPacientes.append(per)
     alert.showinfo(title='Resultado', message="Usuario guardado con exito")
+    frm.destroy()
 
 def  mostrarPaciente(p):
     formMostrar = Toplevel(root)
@@ -162,6 +163,34 @@ def SeleccionPacienteModificar():
         if pacientes.get(i) == selected:
             ModificarPaciente(listaPacientes[i])
 
+def Eliminar(p,frm):
+    if p in listaPacientes:
+        confirmar = alert.askokcancel(title='Confirmar', message=f'¿Seguro que desea eliminar a {p.nombre}?')
+        if confirmar:
+            listaPacientes.remove(p)
+            frm.destroy()
+    else:
+        alert.showerror(title='Error', message='No se pudo eliminar el paciente')
+
+def modificar(p, ced,nom, ape, tel, mail,peso,alt,edad, gender,frm, telE =0):
+    try:
+        p.nombre = nom
+        p.identificacion = ced
+        p.apellido= ape
+        p.telefono= tel
+        p.correo= mail
+        p.peso= peso
+        p.altura = alt
+        p.edad = edad
+        p.sexo = gender
+
+        if telE != 0:
+            p.telefonoP = telE
+        alert.showinfo(title='Resultado',message='Usuario modificado correctamente')
+        p.IMC= CalcularIMC(Peso=peso,Altura= alt,Edad= edad,Sexo= gender)
+        frm.destroy()
+    except :
+        alert.showerror(title='Resultado',message='Error al modificar')
 
 def seleccionPacienteConsultar():
     selected = pacientes.get(pacientes.curselection())
@@ -273,11 +302,19 @@ def ModificarPaciente(p):
     g2.grid(column=3, row=9)
 
     #falta command
-    btnModificar= Button(formModificar, text="Modificar", width=12, height=2, border=1)
+    btnModificar= Button(formModificar, text="Modificar", command=lambda:modificar(frm=formModificar,
+        p=p, ced= txtIdentificacion.get(),
+        nom=txtNombre.get(),
+        ape=txtapellido.get(),
+        tel=int(txtTelefono.get()),
+        mail=txtCorreo.get(),
+        peso=float(txtpeso.get()),
+        alt= float(txtaltura.get()),
+        edad=int(txtedad.get()),
+        gender=gender.get()), width=12, height=2, border=1)
     btnModificar.grid(column=1, row=10, columnspan=3, pady=10)
 
-    #falta command
-    btnEliminar = Button(formModificar, text='Eliminar', width=15, height=2, border=1)
+    btnEliminar = Button(formModificar, text='Eliminar', command=lambda:Eliminar(p,formModificar), width=15, height=2, border=1)
     btnEliminar.grid(column=1, row=11, columnspan=3, pady=10)
 
     #verificar si existe el atributo en el objeto
@@ -370,6 +407,7 @@ def nuevoPaciente():
     gender.set('M')
     
     btnAceptar= Button(formPaciente, text="Aceptar", command=lambda:AgregarCliente(
+    frm=formPaciente,
     ced= txtIdentificacion.get(),
     nom= txtNombre.get(),
     ape= txtapellido.get(), 
@@ -390,6 +428,7 @@ def nuevoPaciente():
         txttelEncargado.grid(column=2,row=10, columnspan=2)
         btnAceptar.grid_forget()
         btnAceptarM= Button(formPaciente, text="Aceptar", command=lambda:AgregarCliente(
+    frm=formPaciente,
     ced=txtIdentificacion.get(),
     nom= txtNombre.get(),
     ape= txtapellido.get(), 
