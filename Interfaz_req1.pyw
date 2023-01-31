@@ -28,15 +28,17 @@ def TablaIMC(datos, sexo, edad):
         if(edad>=20):
             if (datos < TablaIMCAdulto[0]):
                 return "Bajo peso"
-            elif(datos > TablaIMCAdulto[0] and datos < TablaIMCAdulto[1]):
+            elif(datos >= TablaIMCAdulto[0] and datos <= TablaIMCAdulto[1]):
                 return "Peso normal"
-            elif (datos> TablaIMCAdulto[2] and datos < TablaIMCAdulto[3]):
+            elif (datos>= TablaIMCAdulto[2] and datos <= TablaIMCAdulto[3]):
                 return "Sobrepeso"
-            elif (datos>TablaIMCAdulto[4]):
+            elif (datos>=TablaIMCAdulto[4]):
                 return "Obesidad"
 
         if (edad >5 and edad <=19 and sexo == "F"):
-            if (datos <= TablaIMCNina[0] and datos <= TablaIMCNina[1]):
+            if (datos < TablaIMCNina[0]):
+                return "Bajo peso"
+            elif (datos >= TablaIMCNina[0] and datos <= TablaIMCNina[1]):
                 return "Bajo peso"
             elif(datos >= TablaIMCNina[2] and datos <= TablaIMCNina[3] ):
                 return "Peso normal"
@@ -46,7 +48,9 @@ def TablaIMC(datos, sexo, edad):
                 return "Obesidad"
 
         if (edad > 5 and edad <=19 and sexo == "M"):
-            if (datos <= TablaIMCNino[0] and datos <= TablaIMCNino[1]):
+            if (datos < TablaIMCNino[0]):
+                return "Bajo peso"
+            elif (datos >= TablaIMCNino[0] and datos <= TablaIMCNino[1]):
                 return "Bajo peso"
             elif(datos >= TablaIMCNino[2] and datos <= TablaIMCNino[3] ):
                 return "Peso normal"
