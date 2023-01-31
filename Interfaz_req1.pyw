@@ -1,6 +1,7 @@
 from tkinter import *
 import tkinter.font as tkfont
 import tkinter.messagebox as alert
+from xml.dom import minidom
 
 #Clase creada para trabajar datos
 from ClassCliente import Cliente, ClienteMenor
@@ -22,6 +23,66 @@ listaPacientes=[]
 listaPacientes.append(p)
 listaPacientes.append(p2)
 
+document = "Clientes.xml"
+
+doc = xml.dom.minidom.parseString(document)
+
+#Leer
+name = doc.getElementsByTagName("name")[0]
+print(name.firstChild.data)
+
+staffs = doc.getElementsByTagName("staff")
+for staff in staffs:
+        sid = staff.getAttribute("id")
+        nickname = staff.getElementsByTagName("nickname")[0]
+        salary = staff.getElementsByTagName("salary")[0]
+        print("id:%s, nickname:%s, salary:%s" %
+              (sid, nickname.firstChild.data, salary.firstChild.data))
+
+#Escribir
+def getText(nodelist): 
+    for node in nodelist:
+        if node.nodeType == node.TEXT_NODE:
+            listaPacientes.append(node.data)
+    return ''.join(listaPacientes)
+
+def handleSlideshow(slideshow):
+    print("<html>")
+    handleSlideshowTitle(slideshow.getElementsByTagName("title")[0])
+    slides = slideshow.getElementsByTagName("slide")
+    handleToc(slides)
+    handleSlides(slides)
+    print("</html>")
+
+def handleSlides(slides):
+    for slide in slides:
+        handleSlide(slide)
+
+def handleSlide(slide):
+    handleSlideTitle(slide.getElementsByTagName("title")[0])
+    handlePoints(slide.getElementsByTagName("point"))
+
+def handleSlideshowTitle(title):
+    print(f"<title>{getText(title.childNodes)}</title>")
+
+def handleSlideTitle(title):
+    print(f"<h2>{getText(title.childNodes)}</h2>")
+
+def handlePoints(points):
+    print("<ul>")
+    for point in points:
+        handlePoint(point)
+    print("</ul>")
+
+def handlePoint(point):
+    print(f"<li>{getText(point.childNodes)}</li>")
+
+def handleToc(slides):
+    for slide in slides:
+        title = slide.getElementsByTagName("title")[0]
+        print(f"<p>{getText(title.childNodes)}</p>")
+
+handleSlideshow(doc)
 
 def TablaIMC(datos, sexo, edad):
     try:
@@ -419,6 +480,7 @@ def nuevoPaciente():
     nom = StringVar()
     ape =StringVar()
     tel = StringVar()
+    telefE = StringVar()
     resp=alert.askquestion(title='Tipo Paciente', message='¿Va a agregar un menor?')
 
     formPaciente = Toplevel(root)
@@ -515,8 +577,10 @@ def nuevoPaciente():
         lbltelEncargado = Label(formPaciente, text='Teléfono Encargado', font=fontText, pady=paddingForm)
         lbltelEncargado.grid(column=1,row=10)
 
-        txttelEncargado= Entry(formPaciente, font=fontText)
+        txttelEncargado= Entry(formPaciente, font=fontText, textvariable = telefE)
         txttelEncargado.grid(column=2,row=10, columnspan=2)
+        telefE.trace("w", lambda *args: limitador(telefE,9))
+        
         btnAceptar.grid_forget()
         btnAceptarM= Button(formPaciente, text="Aceptar", command=lambda:AgregarCliente(
         frm=formPaciente,
