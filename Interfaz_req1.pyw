@@ -67,19 +67,53 @@ def CalcularIMC(Peso,Altura,Edad,Sexo):
         #30.0 o más	Obesidad
     return f'{Resultado} / {dato}'
 
-def AgregarCliente(ced,nom, ape,tel,peso,alt,edad,sexo,frm,correo='', telE=0):
-    if nom == '' or peso == 0 or alt == 0 or edad == 0 or tel == 0:
-        alert.showerror(title='Compos Incompletos',message='Debe completar minimo los campos de nombre,telefono,peso, altura y edad')
-    else:
-        if telE != 0:
-            per = ClienteMenor(ced,nom,ape,tel,correo,peso,alt,edad,sexo,telE)
+def AgregarCliente(ced,nom, ape,tel,peso,alt,edad,sexo,frm,correo, telE=''):
+    validar = False
+    if ced == '' or nom == '' or ape == '' or tel == '' or correo == '' or peso == '' or alt == '' or edad == '' or sexo == '' or tel == 0:
+        alert.showerror(title='Campos Incompletos',message='Debe completar todos los datos.')
+        validar = True
+    if len(nom) > 30:
+        alert.showerror(title='Nombre demaciado grande',message='El máximo de carácteres del nombre es de 30.')
+        validar = True
+    if len(ced) != 9:
+        alert.showerror(title='Identificación inválido',message='La identificación debe ser de 9 carácteres.')
+        validar = True
+    if len(ape) > 60:
+        alert.showerror(title='Apellidos demaciado grandes',message='El máximo de carácteres de los apellidos es de 60')
+        validar = True
+    if len(tel) != 8:
+        alert.showerror(title='Teléfono inválido',message='El teléfono debe ser de 8 carácteres.')
+        validar = True
+    if not tel.isnumeric():
+        alert.showerror(title='Teléfono no es numérico',message='El teléfono debe ser numérico.')
+        validar = True
+    if not edad.isnumeric():
+        alert.showerror(title='Edad no es numérico',message='La edad debe ser numérico.')
+        validar = True
+    try:
+        if telE != '':
+            if len(telE) != 8:
+                alert.showerror(title='Teléfono del encargado inválido',message='El teléfono del encargado debe ser de 8 carácteres.')
+                validar = True
+            if not telE.isnumeric():
+                alert.showerror(title='Teléfono del encargado no es numérico',message='El teléfono del encargado debe ser numérico.')
+                validar = True
+            if int(edad) >= 20:
+                alert.showerror(title='Edad inválida para un niño(a)',message='Para ser niño debe tener edad menor o igual a 19 años')
+                validar = True
+            if validar:
+                raise
+            else:
+                per = ClienteMenor(ced,nom,ape,int(tel),correo,float(peso),float(alt),int(edad),sexo,telE)
         else:
-            per = Cliente(ced,nom,ape,tel,correo,peso,alt,edad,sexo)
-            
-        per.IMC= CalcularIMC(Peso=peso,Altura= alt,Edad= edad,Sexo= sexo) 
+            per = Cliente(ced,nom,ape,int(tel),correo,float(peso),float(alt),int(edad),sexo)
+        per.IMC= CalcularIMC(Peso=float(peso),Altura= float(alt),Edad= int(edad),Sexo= sexo) 
         listaPacientes.append(per)
         alert.showinfo(title='Resultado', message="Usuario guardado con exito")
         frm.destroy()
+    except:
+        alert.showerror(title='Resultado',message='Error al agregar')
+        
 
 def  mostrarPaciente(p):
     formMostrar = Toplevel(root)
@@ -92,7 +126,7 @@ def  mostrarPaciente(p):
     txtIMC = Label(formMostrar, text=p.IMC)
     txtIMC.grid(column=2, row=0, columnspan=2)
 
-    lblIdentificacion = Label(formMostrar, text="Identificacion", pady=paddingForm, font=fontText)
+    lblIdentificacion = Label(formMostrar, text="Identificación", pady=paddingForm, font=fontText)
     lblIdentificacion.grid(column=1,row=1,padx=10)
 
     txtIdentificacion = Label(formMostrar, text=p.identificacion)
@@ -110,7 +144,7 @@ def  mostrarPaciente(p):
     txtapellido= Label(formMostrar, text=p.apellido)
     txtapellido.grid(column=2, row=3, padx=5,columnspan=2)
 
-    lblTelefono= Label(formMostrar, text="Telefono",pady=paddingForm, font=fontText)
+    lblTelefono= Label(formMostrar, text="Teléfono",pady=paddingForm, font=fontText)
     lblTelefono.grid(column=1,row=4)
 
     txtTelefono = Label(formMostrar, text=p.telefono)
@@ -148,7 +182,7 @@ def  mostrarPaciente(p):
 
 
     if hasattr(p,'telefonoP'):
-        lbltelEncargado = Label(formMostrar, text='Telefono Encargado', font=fontText, pady=paddingForm)
+        lbltelEncargado = Label(formMostrar, text='Teléfono Encargado', font=fontText, pady=paddingForm)
         lbltelEncargado.grid(column=1,row=10)
 
         txttelEncargado= Label(formMostrar, text=p.telefonoP)
@@ -173,22 +207,56 @@ def Eliminar(p,frm):
     else:
         alert.showerror(title='Error', message='No se pudo eliminar el paciente')
 
-def modificar(p, ced,nom, ape, tel, mail,peso,alt,edad, gender,frm, telE =0):
+def modificar(p, ced,nom, ape, tel, mail,peso,alt,edad, gender,frm, telE =''):
+    validar = False
+    if ced == '' or nom == '' or ape == '' or tel == '' or mail == '' or peso == '' or alt == '' or edad == '' or gender == '' or tel == 0:
+        alert.showerror(title='Campos Incompletos',message='Debe completar todos los datos.')
+        validar = True
+    if len(nom) > 30:
+        alert.showerror(title='Nombre demaciado grande',message='El máximo de carácteres del nombre es de 30.')
+        validar = True
+    if len(ced) != 9:
+        alert.showerror(title='Identificación inválido',message='La identificación debe ser de 9 carácteres.')
+        validar = True
+    if len(ape) > 60:
+        alert.showerror(title='Apellidos demaciado grandes',message='El máximo de carácteres de los apellidos es de 60')
+        validar = True
+    if len(tel) != 8:
+        alert.showerror(title='Teléfono inválido',message='El teléfono debe ser de 8 carácteres.')
+        validar = True
+    if not tel.isnumeric():
+        alert.showerror(title='Teléfono no es numérico',message='El teléfono debe ser numérico.')
+        validar = True
+    if not edad.isnumeric():
+        alert.showerror(title='Edad no es numérico',message='La edad debe ser numérico.')
+        validar = True
+    if (telE != ''):
+        if len(telE) != 8:
+            alert.showerror(title='Teléfono del encargado inválido',message='El teléfono del encargado debe ser de 8 carácteres.')
+            validar = True
+        if not telE.isnumeric():
+            alert.showerror(title='Teléfono del encargado no es numérico',message='El teléfono del encargado debe ser numérico.')
+            validar = True
+        if int(edad) >= 20:
+            alert.showerror(title='Edad inválida para un niño(a)',message='Para ser niño debe tener edad menor o igual a 19 años')
+            validar = True
     try:
+        if validar:
+            raise
         p.nombre = nom
         p.identificacion = ced
         p.apellido= ape
-        p.telefono= tel
+        p.telefono= int(tel)
         p.correo= mail
-        p.peso= peso
-        p.altura = alt
-        p.edad = edad
+        p.peso= float(peso)
+        p.altura = float(alt)
+        p.edad = int(edad)
         p.sexo = gender
 
         if telE != 0:
             p.telefonoP = telE
         alert.showinfo(title='Resultado',message='Usuario modificado correctamente')
-        p.IMC= CalcularIMC(Peso=peso,Altura= alt,Edad= edad,Sexo= gender)
+        p.IMC= CalcularIMC(Peso=float(peso),Altura= float(alt),Edad= int(edad),Sexo= gender)
         frm.destroy()
     except :
         alert.showerror(title='Resultado',message='Error al modificar')
@@ -244,7 +312,7 @@ def ModificarPaciente(p):
     lblTitulo.grid(column=1,row=0, columnspan=2,padx=10)
 
 
-    lblIdentificacion = Label(formModificar, text="Identificacion", pady=paddingForm, font=fontText)
+    lblIdentificacion = Label(formModificar, text="Identificación", pady=paddingForm, font=fontText)
     lblIdentificacion.grid(column=1,row=1,padx=10)
 
     txtIdentificacion = Entry(formModificar,font=fontText, textvariable=ced)#colocar el font a los entry aumenta el tamano
@@ -263,7 +331,7 @@ def ModificarPaciente(p):
     txtapellido= Entry(formModificar, font=fontText, textvariable=ape)
     txtapellido.grid(column=2, row=3, padx=5,columnspan=2)
 
-    lblTelefono= Label(formModificar, text="Telefono",pady=paddingForm, font=fontText)
+    lblTelefono= Label(formModificar, text="Teléfono",pady=paddingForm, font=fontText)
     lblTelefono.grid(column=1,row=4)
 
     txtTelefono = Entry(formModificar, font=fontText, textvariable=tel)
@@ -308,11 +376,11 @@ def ModificarPaciente(p):
         p=p, ced= txtIdentificacion.get(),
         nom=txtNombre.get(),
         ape=txtapellido.get(),
-        tel=int(txtTelefono.get()),
+        tel=txtTelefono.get(),
         mail=txtCorreo.get(),
-        peso=float(txtpeso.get()),
-        alt= float(txtaltura.get()),
-        edad=int(txtedad.get()),
+        peso=txtpeso.get(),
+        alt= txtaltura.get(),
+        edad=txtedad.get(),
         gender=gender.get()), width=12, height=2, border=1)
     btnModificar.grid(column=1, row=10, columnspan=3, pady=10)
 
@@ -321,7 +389,7 @@ def ModificarPaciente(p):
 
     #verificar si existe el atributo en el objeto
     if hasattr(p, 'telefonoP'):
-        lbltelEncargado = Label(formModificar, text='Telefono Encargado', font=fontText, pady=paddingForm)
+        lbltelEncargado = Label(formModificar, text='Teléfono Encargado', font=fontText, pady=paddingForm)
         lbltelEncargado.grid(column=1,row=10)
 
         telEncargado = StringVar(value=p.telefonoP)
@@ -345,7 +413,7 @@ def nuevoPaciente():
     lblTitulo.grid(column=1,row=0, columnspan=2,padx=10)
 
 
-    lblIdentificacion = Label(formPaciente, text="Identificacion", pady=paddingForm, font=fontText)
+    lblIdentificacion = Label(formPaciente, text="Identificación", pady=paddingForm, font=fontText)
     lblIdentificacion.grid(column=1,row=1,padx=10)
 
     txtIdentificacion = Entry(formPaciente,font=fontText)#colocar el font a los entry aumenta el tamano
@@ -364,7 +432,7 @@ def nuevoPaciente():
     txtapellido= Entry(formPaciente, font=fontText)
     txtapellido.grid(column=2, row=3, padx=5,columnspan=2)
 
-    lblTelefono= Label(formPaciente, text="Telefono",pady=paddingForm, font=fontText)
+    lblTelefono= Label(formPaciente, text="Teléfono",pady=paddingForm, font=fontText)
     lblTelefono.grid(column=1,row=4)
 
     txtTelefono = Entry(formPaciente, font=fontText)
@@ -413,34 +481,34 @@ def nuevoPaciente():
     ced= txtIdentificacion.get(),
     nom= txtNombre.get(),
     ape= txtapellido.get(), 
-    tel= int(txtTelefono.get()),
+    tel= txtTelefono.get(),
     correo= txtCorreo.get(),
-    peso= float(txtpeso.get()),
-    alt= float(txtaltura.get()),
-    edad= int(txtedad.get()),
+    peso= txtpeso.get(),
+    alt= txtaltura.get(),
+    edad= txtedad.get(),
     sexo= gender.get()), width=10)
     btnAceptar.grid(column=1, row=10, columnspan=3, pady=10)
 
     if resp == 'yes':
         
-        lbltelEncargado = Label(formPaciente, text='Telefono Encargado', font=fontText, pady=paddingForm)
+        lbltelEncargado = Label(formPaciente, text='Teléfono Encargado', font=fontText, pady=paddingForm)
         lbltelEncargado.grid(column=1,row=10)
 
         txttelEncargado= Entry(formPaciente, font=fontText)
         txttelEncargado.grid(column=2,row=10, columnspan=2)
         btnAceptar.grid_forget()
         btnAceptarM= Button(formPaciente, text="Aceptar", command=lambda:AgregarCliente(
-    frm=formPaciente,
-    ced=txtIdentificacion.get(),
-    nom= txtNombre.get(),
-    ape= txtapellido.get(), 
-    tel= int(txtTelefono.get()),
-    correo= txtCorreo.get(),
-    peso= float(txtpeso.get()),
-    alt= float(txtaltura.get()),
-    edad= int(txtedad.get()),
-    sexo= gender.get(),
-    telE= int(txttelEncargado.get())), width=10)
+        frm=formPaciente,
+        ced=txtIdentificacion.get(),
+        nom= txtNombre.get(),
+        ape= txtapellido.get(), 
+        tel= txtTelefono.get(),
+        correo= txtCorreo.get(),
+        peso= txtpeso.get(),
+        alt= txtaltura.get(),
+        edad= txtedad.get(),
+        sexo= gender.get(),
+        telE= txttelEncargado.get()), width=10)
         btnAceptarM.grid(column=1, row=11, columnspan=3, pady=10)
     formPaciente.mainloop()
 
@@ -448,7 +516,7 @@ def nuevoPaciente():
 def ConsultarPaciente():
     global pacientes, txtBuscar
     formConsultar = Toplevel(root)
-    formConsultar.title("Busqueda")
+    formConsultar.title("Búsqueda")
 
     lblBuscar = Label(formConsultar, text='Digite el nombre o apellido',justify='center', font=fontText)
     lblBuscar.grid(column=1,row=0)
@@ -476,7 +544,7 @@ def ConsultarPaciente():
 def ConsultarPacienteMod():
     global pacientes, txtBuscar
     formConsultar = Toplevel(root)
-    formConsultar.title("Busqueda")
+    formConsultar.title("Búsqueda")
 
     lblBuscar = Label(formConsultar, text='Digite el nombre o apellido',justify='center', font=fontText)
     lblBuscar.grid(column=1,row=0)
@@ -504,7 +572,7 @@ def ConsultarPacienteMod():
 root= Tk()
 root.geometry("600x400")
 root.resizable(False,False)
-root.title("Pacientes - Elemental Nutricion")
+root.title("Pacientes - Elemental Nutrición")
 
 
 #variables interfaz
