@@ -1,58 +1,43 @@
-TablaIMCAdulto = [18.5,24.9,29.9]
-TablaIMCNina = [13.8,16.8,18.8]
-TablaIMCNino = [16.4,18.6,24.7,29.4]
+TablaIMCAdulto = [18.5,24.9,25.0,29.9,30.0]
+TablaIMCNina = [12.7,18.5, 13.9,24.7, 16.9,29.4]
+TablaIMCNino = [13.0,19.1, 14.1,24.8, 16.6,29.1]
 #TablaIMC 
 def TablaIMC(self,datos):
     try:
-      if(self.edad>=20):
-        if (datos <= TablaIMCAdulto[0]):
-          return "Bajo peso"
-        elif(datos < TablaIMCAdulto[0] or datos >= TablaIMCAdulto[1]):
-          return "Peso normal"
-        elif (datos< TablaIMCAdulto[1] or datos >=TablaIMCAdulto[2]):
-          return "Sobrepeso"
-        elif (datos>TablaIMCAdulto[3]):
-          return "Obesidad"
-      if (self.edad <=5 or self.edad >=10 and self.sexo == "F"):
-        if (datos <= TablaIMCNina[0]):
-          return "Bajo peso"
-        elif(datos < TablaIMCNina[0] or datos >= TablaIMCNina[1] ):
-          return "Peso normal"
-        elif (datos< TablaIMCNina[1] or datos >=TablaIMCNina[2]):
-          return "Sobrepeso"
-        elif (datos>TablaIMCNina[2]):
-          return "Obesidad"
-        if (self.edad <=10 or self.edad >=19 and self.sexo == "M"):
-          if (datos <= TablaIMCNino[0]):
-            return "Bajo peso"
-        elif(datos < TablaIMCNino[1] or datos >= TablaIMCNino[2] ):
-          return "Peso normal"
-        elif (datos< TablaIMCNino[2] or datos >=TablaIMCNino[3]):
-          return "Sobrepeso"
-        elif (datos>TablaIMCNino[3]):
-          return "Obesidad"
+        if(self.edad>=20):
+            if (datos <= TablaIMCAdulto[0]):
+                return "Bajo peso"
+            elif(datos > TablaIMCAdulto[0] and datos < TablaIMCAdulto[1]):
+                return "Peso normal"
+            elif (datos> TablaIMCAdulto[2] and datos < TablaIMCAdulto[3]):
+                return "Sobrepeso"
+            elif (datos>=TablaIMCAdulto[4]):
+                return "Obesidad"
+        if (self.edad < 5):
+            return 'La edad no puede ser menor a 5'
+        else:
+            if (self.edad >5 and self.edad <=19 and self.sexo == "F"):
+                if (datos >= TablaIMCNina[0] and datos <= TablaIMCNina[1]):
+                    return "Bajo peso"
+                elif(datos >= TablaIMCNina[2] and datos <= TablaIMCNina[3] ):
+                    return "Peso normal"
+                elif (datos >= TablaIMCNina[4] and datos <=TablaIMCNina[5]):
+                    return "Sobrepeso"
+                elif (datos>TablaIMCNina[5]):
+                    return "Obesidad"
+
+            if (self.edad > 5 and self.edad <=19 and self.sexo == "M"):
+                if (datos >= TablaIMCNino[0] and datos <= TablaIMCNino[1]):
+                    return "Bajo peso"
+                elif(datos >= TablaIMCNino[2] and datos <= TablaIMCNino[3] ):
+                    return "Peso normal"
+                elif (datos >= TablaIMCNino[4] and datos <=TablaIMCNino[5]):
+                    return "Sobrepeso"
+                elif (datos>TablaIMCNino[5]):
+                    return "Obesidad"
     except:
-      print("El dato a comparar no corresponde")
+        print("El dato a comparar no corresponde")
 
-def AgregarDatos():
-    identificacion = input("Digite identificacion:")
-    nombre = input("Digite nombre:")
-    apellido = input("Digite apellido:")
-    telefono = input("Digite telefono:")
-    correo = input("Digite correo:")
-    peso = input("Digite peso:")
-    altura = input("Digite altura:")
-    edad = input("Digite edad:")
-    sexo = input("Digite sexo:")
-    per = Cliente(identificacion,nombre,apellido,telefono,correo,peso,altura,edad,sexo)
-    Personas.append(per)
-    print("Persona guardada con exito")
-    Mostrar()
 
-def MostrarDatos():
-  k=0
-  while k < len(Personas):
-    print(Personas[k].identificacion,Personas[k].nombre,Personas[k].apellido)
-    k+=1
 
 
