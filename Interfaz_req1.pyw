@@ -1,8 +1,9 @@
 from tkinter import *
 import tkinter.font as tkfont
 import tkinter.messagebox as alert
-from xml.dom import minidom
-
+#from xml.dom import minidom
+import xml.etree.ElementTree as ET
+import os.path
 #Clase creada para trabajar datos
 from ClassCliente import Cliente, ClienteMenor
 paddingForm= 10
@@ -23,66 +24,83 @@ listaPacientes=[]
 listaPacientes.append(p)
 listaPacientes.append(p2)
 
-document = "Clientes.xml"
+if (os.path.exists("Pacientes.xml")):
+    tree = ET.parse("Pacientes.xml")
+    root = tree.getroot()
 
-doc = xml.dom.minidom.parseString(document)
+    for children in root:
+        datos = []
+        for child in children:
+            datos.append(child.text)
+        if (datos[10] == None):
+            p = Cliente(datos[0],datos[1],datos[2],datos[3],datos[4],datos[5],datos[6],datos[7],datos[8])
+            p.IMC = datos[9]
+            listaPacientes.append(p)
+        else:
+            p = ClienteMenor(datos[0],datos[1],datos[2],datos[3],datos[4],datos[5],datos[6],datos[7],datos[8],datos[10])
+            p.IMC = datos[9]
+            listaPacientes.append(p)
 
-#Leer
-name = doc.getElementsByTagName("name")[0]
-print(name.firstChild.data)
+# document = "Clientes.xml"
 
-staffs = doc.getElementsByTagName("staff")
-for staff in staffs:
-        sid = staff.getAttribute("id")
-        nickname = staff.getElementsByTagName("nickname")[0]
-        salary = staff.getElementsByTagName("salary")[0]
-        print("id:%s, nickname:%s, salary:%s" %
-              (sid, nickname.firstChild.data, salary.firstChild.data))
+# doc = xml.dom.minidom.parseString(document)
 
-#Escribir
-def getText(nodelist): 
-    for node in nodelist:
-        if node.nodeType == node.TEXT_NODE:
-            listaPacientes.append(node.data)
-    return ''.join(listaPacientes)
+# #Leer
+# name = doc.getElementsByTagName("name")[0]
+# print(name.firstChild.data)
 
-def handleSlideshow(slideshow):
-    print("<html>")
-    handleSlideshowTitle(slideshow.getElementsByTagName("title")[0])
-    slides = slideshow.getElementsByTagName("slide")
-    handleToc(slides)
-    handleSlides(slides)
-    print("</html>")
+# staffs = doc.getElementsByTagName("staff")
+# for staff in staffs:
+#         sid = staff.getAttribute("id")
+#         nickname = staff.getElementsByTagName("nickname")[0]
+#         salary = staff.getElementsByTagName("salary")[0]
+#         print("id:%s, nickname:%s, salary:%s" %
+#               (sid, nickname.firstChild.data, salary.firstChild.data))
 
-def handleSlides(slides):
-    for slide in slides:
-        handleSlide(slide)
+# #Escribir
+# def getText(nodelist): 
+#     for node in nodelist:
+#         if node.nodeType == node.TEXT_NODE:
+#             listaPacientes.append(node.data)
+#     return ''.join(listaPacientes)
 
-def handleSlide(slide):
-    handleSlideTitle(slide.getElementsByTagName("title")[0])
-    handlePoints(slide.getElementsByTagName("point"))
+# def handleSlideshow(slideshow):
+#     print("<html>")
+#     handleSlideshowTitle(slideshow.getElementsByTagName("title")[0])
+#     slides = slideshow.getElementsByTagName("slide")
+#     handleToc(slides)
+#     handleSlides(slides)
+#     print("</html>")
 
-def handleSlideshowTitle(title):
-    print(f"<title>{getText(title.childNodes)}</title>")
+# def handleSlides(slides):
+#     for slide in slides:
+#         handleSlide(slide)
 
-def handleSlideTitle(title):
-    print(f"<h2>{getText(title.childNodes)}</h2>")
+# def handleSlide(slide):
+#     handleSlideTitle(slide.getElementsByTagName("title")[0])
+#     handlePoints(slide.getElementsByTagName("point"))
 
-def handlePoints(points):
-    print("<ul>")
-    for point in points:
-        handlePoint(point)
-    print("</ul>")
+# def handleSlideshowTitle(title):
+#     print(f"<title>{getText(title.childNodes)}</title>")
 
-def handlePoint(point):
-    print(f"<li>{getText(point.childNodes)}</li>")
+# def handleSlideTitle(title):
+#     print(f"<h2>{getText(title.childNodes)}</h2>")
 
-def handleToc(slides):
-    for slide in slides:
-        title = slide.getElementsByTagName("title")[0]
-        print(f"<p>{getText(title.childNodes)}</p>")
+# def handlePoints(points):
+#     print("<ul>")
+#     for point in points:
+#         handlePoint(point)
+#     print("</ul>")
 
-handleSlideshow(doc)
+# def handlePoint(point):
+#     print(f"<li>{getText(point.childNodes)}</li>")
+
+# def handleToc(slides):
+#     for slide in slides:
+#         title = slide.getElementsByTagName("title")[0]
+#         print(f"<p>{getText(title.childNodes)}</p>")
+
+# handleSlideshow(doc)
 
 def TablaIMC(datos, sexo, edad):
     try:

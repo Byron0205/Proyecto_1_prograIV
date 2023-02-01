@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ElementalNutricion>
+    <cliente>
+        <identificacion>123456789</identificacion>
+        <nombre>Juan</nombre>
+        <apellido>Perez Chaves</apellido>
+        <telefono>12345678</telefono>
+        <correo>jpc@gmail.com</correo>
+        <genero>M</genero>
+        <estaturaCM>170</estaturaCM>
+        <pesoKG>80</pesoKG>
+        <edad>22</edad>
+        <imc>032</imc>
+        <telefonoencargado></telefonoencargado>
+    </cliente>
+    <cliente>
+        <identificacion>987654321</identificacion>
+        <nombre>Luis</nombre>
+        <apellido>Mata Solis</apellido>
+        <telefono>87654321</telefono>
+        <correo>lms@gmail.com</correo>
+        <genero>M</genero>
+        <estaturaCM>165</estaturaCM>
+        <pesoKG>75</pesoKG>
+        <edad>10</edad>
+        <imc>28</imc>
+        <telefonoencargado>22334455</telefonoencargado>
+    </cliente>
+</ElementalNutricion>
