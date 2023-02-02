@@ -713,7 +713,18 @@ def ModificarTablaIMC(li1, li2, li3):
 
     formTabla= Toplevel(root)
     formTabla.title("Modificar Tabla de IMC")
-    formTabla.geometry("+{}+{}".format(root.winfo_x() + root.winfo_width(), root.winfo_y()))
+    # Obtener la resolución de la pantalla
+    screen_width = root.winfo_screenwidth()
+    screen_height = root.winfo_screenheight()
+
+    # Calcular la posición x e y para que la ventana quede en el centro
+    window_width = 1080
+    window_height = 420
+    x_coordinate = (screen_width/2) - (window_width/2)
+    y_coordinate = (screen_height/2) - (window_height/2)
+
+    # Asignar la posición y tamaño a la ventana
+    formTabla.geometry("{}x{}+{}+{}".format(window_width, window_height, int(x_coordinate), int(y_coordinate)))
 
     lblTitulo = Label(formTabla, text="Tabla IMC", font=fontTitle)
     lblTitulo.grid(row=0,column=1,columnspan=3, padx=10, pady=10)
@@ -819,7 +830,10 @@ def ModificarTablaIMC(li1, li2, li3):
     command=lambda: modificarValoresIMC(aBajo,aMaxNormal,aMinSobre,aMaxSobre,aObesidad,
     ninaBajoMin,ninaBajoMax,ninoNornalMin,ninoNormalMax,ninoSobreMin,ninoSobreMax,
     ninaBajoMin, ninaBajoMax,ninaNornalMin,ninaNormalMax,ninaSobreMin,ninaSobreMax), width=20)
-    btnModificar.grid(column=4, row=8, padx=18, pady=10, rowspan=2)
+    btnModificar.grid(column=4, row=8, padx=18, pady=10)
+
+    btnSalir = Button(formTabla, text="Salir", command=lambda:formTabla.destroy(), width=20)
+    btnSalir.grid(column=5, row=8, padx=18, pady=10)
 
     formTabla.mainloop()
 
