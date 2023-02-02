@@ -88,8 +88,6 @@ def leerXML():
                 datos = []
                 for child in c:
                         datos.append(child.text)
-                        print(datos)
-                        
                         
                 if (datos[10] == None):
                     p = Cliente(identificacion= datos[0],nombre= datos[1],apellido= datos[2],telefono= datos[3],correo= datos[4],sexo= datos[5],altura= datos[6],peso= datos[7],edad= datos[8])
@@ -100,7 +98,7 @@ def leerXML():
                     p.IMC = datos[9]
                     listaPacientes.append(p)
 
-
+global TablaIMCAdulto, TablaIMCNino,TablaIMCNina
 #tablas de datos IMC
 TablaIMCAdulto = [18.5,24.9, 25.0,29.9, 30.0]
 TablaIMCNina = [12.7,18.5, 13.9,24.7, 16.9,29.4]
@@ -382,6 +380,18 @@ def buscarPaciente(text, frm):
         alert.showinfo(title='NO FOUND', message='No existe un registro que coincida')
 
         frm.grab_release()
+
+def modificarValoresIMC(a1,a2,a3,a4,a5, no1, no2,no3,no4,no5,no6, na1,na2,na3,na4,na5,na6,l1,l2,l3):
+    l1.clear()
+    l1 = [float(a1.get()),float(a2.get()),float(a3.get()),float(a4.get()),float(a5.get())]
+
+    l2.clear()
+    l2 = [float(no1.get()),float(no2.get()),float(no3.get()),float(no4.get()),float(no5.get()),float(no6.get())]
+
+    l3.clear()
+    l3 = [float(na1.get()),float(na2.get()),float(na3.get()),float(na4.get()),float(na5.get()),float(na6.get())]
+
+    return l1, l2,l3
 
 #form
 def ModificarPaciente(p):
@@ -676,12 +686,12 @@ def ConsultarPacienteMod():
 
     formConsultar.mainloop()
 
+#form
 def ModificarTablaIMC(li1, li2, li3):
     aBajo= StringVar(value=li1[0])
-    aMinNormal = StringVar(value=li1[1])
-    aMaxNormal = StringVar(value=li1[2])
-    aMinSobre = StringVar(value=li1[3])
-    aMaxSobre = StringVar(value=li1[4])
+    aMaxNormal = StringVar(value=li1[1])
+    aMinSobre = StringVar(value=li1[2])
+    aMaxSobre = StringVar(value=li1[3])
     aObesidad = StringVar(value=li1[4])
 
     ninoBajoMin = StringVar(value= li2[0])
@@ -707,16 +717,108 @@ def ModificarTablaIMC(li1, li2, li3):
     lblTitulo = Label(formTabla, text="Tabla IMC", font=fontTitle)
     lblTitulo.grid(row=0,column=1,columnspan=3, padx=10, pady=10)
 
-    lblAduto = Label(formTabla, text='Adutos', font=fontText, justify=CENTER)
-    lblAduto.grid(row=0,column=0, rowspan=4)
+    lblAduto = Label(formTabla, text='Adultos', font=fontText)
+    lblAduto.grid(row=1,column=0, pady=10)
 
     lblABajo = Label(formTabla, text="Bajo peso\nmenor a:")
-    lblABajo.grid(row=1, column=0, padx=8)
+    lblABajo.grid(row=2, column=0, padx=8)
 
     txtABajo = Entry(formTabla, textvariable=aBajo, font=fontText)
-    txtABajo.grid(row=1, column=1, padx=8)
+    txtABajo.grid(row=2, column=1, padx=8)
+    
+    lblANormal = Label(formTabla, text="Peso normal entre:", justify=CENTER)
+    lblANormal.grid(row=3, column=0, padx=8)
 
+    txtAnormal1 = Entry(formTabla, textvariable=aBajo, font=fontText)
+    txtAnormal1.grid(row=3, column=1, padx=8)
+    txtAnormal2 = Entry(formTabla, textvariable=aMaxNormal, font=fontText)
+    txtAnormal2.grid(row=3, column=2, padx=8)
+    
+    lblAsobre = Label(formTabla, text="Sobrepeso entre:", justify=CENTER)
+    lblAsobre.grid(row=4, column=0, padx=8)
 
+    txtAsobre1 = Entry(formTabla, textvariable=aMinSobre, font=fontText)
+    txtAsobre1.grid(row=4, column=1, padx=8)
+    txtAsobre2 = Entry(formTabla, textvariable=aMaxSobre, font=fontText)
+    txtAsobre2.grid(row=4, column=2, padx=8)
+    
+    lblAObesidad = Label(formTabla, text="Obesidad\nmayor a:", justify=CENTER)
+    lblAObesidad.grid(row=5, column=0, padx=8)
+    
+    txtAsobre2 = Entry(formTabla, textvariable=aObesidad, font=fontText)
+    txtAsobre2.grid(row=5, column=1, padx=8)
+    
+    lblNino = Label(formTabla, text='Niños', font=fontText)
+    lblNino.grid(row=1,column=3, pady=10)
+
+    lblNoBajo = Label(formTabla, text="Bajo peso\nmenor a:")
+    lblNoBajo.grid(row=2, column=3, padx=8)
+
+    txtNoBajo1 = Entry(formTabla, textvariable=ninoBajoMin, font=fontText)
+    txtNoBajo1.grid(row=2, column=4, padx=8)
+    txtNoBajo2 = Entry(formTabla, textvariable=ninoBajoMax, font=fontText)
+    txtNoBajo2.grid(row=2, column=5, padx=8)
+    
+    lblNoNormal = Label(formTabla, text="Peso normal entre:", justify=CENTER)
+    lblNoNormal.grid(row=3, column=3, padx=8)
+
+    txtNoNormal1 = Entry(formTabla, textvariable=ninoNornalMin, font=fontText)
+    txtNoNormal1.grid(row=3, column=4, padx=8)
+    txtNoNormal2 = Entry(formTabla, textvariable=ninoNormalMax, font=fontText)
+    txtNoNormal2.grid(row=3, column=5, padx=8)
+    
+    lblNosobre = Label(formTabla, text="Sobrepeso entre:", justify=CENTER)
+    lblNosobre.grid(row=4, column=3, padx=8)
+
+    txtNosobre1 = Entry(formTabla, textvariable=ninoSobreMin, font=fontText)
+    txtNosobre1.grid(row=4, column=4, padx=8)
+    txtNosobre2 = Entry(formTabla, textvariable=ninoSobreMax, font=fontText)
+    txtNosobre2.grid(row=4, column=5, padx=8)
+    
+    lblNoObesidad = Label(formTabla, text="Obesidad\nmayor a:", justify=CENTER)
+    lblNoObesidad.grid(row=5, column=3, padx=8)
+    
+    txtNosobre2 = Entry(formTabla, textvariable=ninoSobreMax, font=fontText)
+    txtNosobre2.grid(row=5, column=4, padx=8)
+    #ninna
+    lblNina = Label(formTabla, text='Niñas', font=fontText)
+    lblNina.grid(row=6,column=0, pady=10)
+
+    lblNaBajo = Label(formTabla, text="Bajo peso\nmenor a:")
+    lblNaBajo.grid(row=7, column=0, padx=8)
+
+    txtNaBajo1 = Entry(formTabla, textvariable=ninaBajoMin, font=fontText)
+    txtNaBajo1.grid(row=7, column=1, padx=8)
+    txtNaBajo2 = Entry(formTabla, textvariable=ninaBajoMax, font=fontText)
+    txtNaBajo2.grid(row=7, column=2, padx=8)
+    
+    lblNaNormal = Label(formTabla, text="Peso normal entre:", justify=CENTER)
+    lblNaNormal.grid(row=8, column=0, padx=8)
+
+    txtNaNormal1 = Entry(formTabla, textvariable=ninaNornalMin, font=fontText)
+    txtNaNormal1.grid(row=8, column=1, padx=8)
+    txtNaNormal2 = Entry(formTabla, textvariable=ninaNormalMax, font=fontText)
+    txtNaNormal2.grid(row=8, column=2, padx=8)
+    
+    lblNasobre = Label(formTabla, text="Sobrepeso entre:", justify=CENTER)
+    lblNasobre.grid(row=9, column=0, padx=8)
+
+    txtNasobre1 = Entry(formTabla, textvariable=ninaSobreMin, font=fontText)
+    txtNasobre1.grid(row=9, column=1, padx=8)
+    txtNasobre2 = Entry(formTabla, textvariable=ninaSobreMax, font=fontText)
+    txtNasobre2.grid(row=9, column=2, padx=8)
+    
+    lblNaObesidad = Label(formTabla, text="Obesidad\nmayor a:", justify=CENTER)
+    lblNaObesidad.grid(row=10, column=0, padx=8)
+    
+    txtNasobre2 = Entry(formTabla, textvariable=ninaSobreMax, font=fontText)
+    txtNasobre2.grid(row=10, column=1, padx=8)
+
+    btnModificar= Button(formTabla, text="Modificar Datos", 
+    command=lambda: modificarValoresIMC(aBajo,aMaxNormal,aMinSobre,aMaxSobre,aObesidad,
+    ninaBajoMin,ninaBajoMax,ninoNornalMin,ninoNormalMax,ninoSobreMin,ninoSobreMax,
+    ninaBajoMin, ninaBajoMax,ninaNornalMin,ninaNormalMax,ninaSobreMin,ninaSobreMax), width=20)
+    btnModificar.grid(column=4, row=8, padx=18, pady=10, rowspan=2)
 
     formTabla.mainloop()
 
