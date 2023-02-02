@@ -14,16 +14,16 @@
         <telefonoEncargado>45326622</telefonoEncargado>
     </cliente>
     <cliente>
-        <identificación>123456789</identificación>
-        <nombre>Byron</nombre>
-        <apellido>Sosa</apellido>
-        <telefono>56475647</telefono>
-        <correo>example@example.com</correo>
+        <identificación>174509344</identificación>
+        <nombre>Manuel</nombre>
+        <apellido>Barrios</apellido>
+        <telefono>45678999</telefono>
+        <correo>ex@ex.com</correo>
         <genero>M</genero>
-        <estaturaCM>177.0</estaturaCM>
-        <pesoKG>70.5</pesoKG>
-        <edad>21</edad>
-        <IMC>22.5 Peso normal</IMC>
+        <estaturaCM>180</estaturaCM>
+        <pesoKG>70.0</pesoKG>
+        <edad>22</edad>
+        <IMC>21.6 Peso normal</IMC>
         <telefonoEncargado/>
     </cliente>
 </ElementalNutricion>

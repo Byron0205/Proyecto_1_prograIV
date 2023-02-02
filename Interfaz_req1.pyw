@@ -194,10 +194,10 @@ def AgregarCliente(ced,nom, ape,tel,peso,alt,edad,sexo,frm,correo, telE=''):
             if validar:
                 raise "Revise los datos"
             else:
-                per = ClienteMenor(ced,nom,ape,int(tel),correo,float(peso),float(alt),int(edad),sexo,telE)
+                per = ClienteMenor(ced,nom,ape,int(tel),correo,float(peso),int(alt),int(edad),sexo,telE)
 
         else:
-            per = Cliente(ced,nom,ape,int(tel),correo,float(peso),float(alt),int(edad),sexo)
+            per = Cliente(ced,nom,ape,int(tel),correo,float(peso),int(alt),int(edad),sexo)
         per.IMC= CalcularIMC(Peso=float(peso),Altura= int(alt),Edad= int(edad),Sexo= sexo) 
         listaPacientes.append(per)
         alert.showinfo(title='Resultado', message="Usuario guardado con exito")
@@ -247,13 +247,13 @@ def  mostrarPaciente(p):
     txtCorreo = Label(formMostrar, text=p.correo)
     txtCorreo.grid(column=2,row=5,columnspan=2)
 
-    lblpeso = Label(formMostrar, text="Peso", pady=paddingForm, font=fontText)
+    lblpeso = Label(formMostrar, text="Peso (Kg)", pady=paddingForm, font=fontText)
     lblpeso.grid(column=1,row=6,padx=10)
 
     txtpeso= Label(formMostrar, text=p.peso)
     txtpeso.grid(column=2, row=6, padx=5,columnspan=2)
 
-    lblaltura = Label(formMostrar, text="Altura", pady=paddingForm, font=fontText)
+    lblaltura = Label(formMostrar, text="Altura (cm)", pady=paddingForm, font=fontText)
     lblaltura.grid(column=1,row=7,padx=10)
 
     txtaltura= Label(formMostrar, text=p.altura)
@@ -381,17 +381,18 @@ def buscarPaciente(text, frm):
 
         frm.grab_release()
 
-def modificarValoresIMC(a1,a2,a3,a4,a5, no1, no2,no3,no4,no5,no6, na1,na2,na3,na4,na5,na6,l1,l2,l3):
-    l1.clear()
-    l1 = [float(a1.get()),float(a2.get()),float(a3.get()),float(a4.get()),float(a5.get())]
+def modificarValoresIMC(a1,a2,a3,a4,a5, no1, no2,no3,no4,no5,no6, na1,na2,na3,na4,na5,na6):
+    TablaIMCAdulto.clear()
+    TablaIMCAdulto.extend([float(a1.get()),float(a2.get()),float(a3.get()),float(a4.get()),float(a5.get())])
 
-    l2.clear()
-    l2 = [float(no1.get()),float(no2.get()),float(no3.get()),float(no4.get()),float(no5.get()),float(no6.get())]
+    TablaIMCNino.clear()
+    TablaIMCNino.extend([float(no1.get()),float(no2.get()),float(no3.get()),float(no4.get()),float(no5.get()),float(no6.get())])
 
-    l3.clear()
-    l3 = [float(na1.get()),float(na2.get()),float(na3.get()),float(na4.get()),float(na5.get()),float(na6.get())]
+    TablaIMCNina.clear()
+    TablaIMCNina.extend([float(na1.get()),float(na2.get()),float(na3.get()),float(na4.get()),float(na5.get()),float(na6.get())])
 
-    return l1, l2,l3
+    for p in listaPacientes:
+        p.IMC= CalcularIMC(Peso=float(p.peso),Altura= int(p.altura),Edad= int(p.edad),Sexo= p.sexo) 
 
 #form
 def ModificarPaciente(p):
@@ -566,7 +567,7 @@ def nuevoPaciente():
     txtpeso= Entry(formPaciente, font=fontText)
     txtpeso.grid(column=2, row=6, padx=5,columnspan=2)
 
-    lblaltura = Label(formPaciente, text="Altura (metros)", pady=paddingForm, font=fontText)
+    lblaltura = Label(formPaciente, text="Altura (cm)", pady=paddingForm, font=fontText)
     lblaltura.grid(column=1,row=7,padx=10)
 
     txtaltura= Entry(formPaciente, font=fontText)
@@ -854,14 +855,12 @@ btnModificarPaciente= Button(root, text="Modificar Tabla IMC",command= lambda:Mo
 btnModificarPaciente.grid(column=3, row=2, padx=18, pady=10)
 
 #Seccion de archivos xml
-lblTitulo= Label(root, text="Control de Pacientes",font=fontTitle)
-lblTitulo.grid(column=2, row=0, pady=15, columnspan=3)
 
 #boton generar xml
 btnGenerarXML= Button(root, text="Exportar\nPacientes",command=EscribirXMl, width=14, height=5, font=fontText, padx=10, border=5, borderwidth=3)
 btnGenerarXML.grid(column=2, row=3, padx=18, pady=10)
 
-#Listo
+#Leer xml
 btnLeerXML= Button(root, text="Leer\nPacientes",command=leerXML, width=14, height=5, font=fontText, padx=10, border=5, borderwidth=3)
 btnLeerXML.grid(column=3, row=3, padx=18,pady=10)
 
