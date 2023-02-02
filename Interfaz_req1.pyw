@@ -382,17 +382,37 @@ def buscarPaciente(text, frm):
         frm.grab_release()
 
 def modificarValoresIMC(a1,a2,a3,a4,a5, no1, no2,no3,no4,no5,no6, na1,na2,na3,na4,na5,na6):
-    TablaIMCAdulto.clear()
-    TablaIMCAdulto.extend([float(a1.get()),float(a2.get()),float(a3.get()),float(a4.get()),float(a5.get())])
+    if float(a2.get())<float(a1.get()) or float(a2.get()) == float(a1.get()):
+        alert.showwarning(title="Error de intervaluo", message='En peso normal de adultos debe haber un intervaluo entre min y max')
+    elif float(a4.get())<float(a3.get()) or float(a3.get()) == float(a4.get()):
+        alert.showwarning(title="Error de intervaluo", message='En sobrepeso de adultos debe haber un intervaluo entre min y max')
+    
+    elif float(no1.get())>float(no2.get()) or float(no1.get()) == float(no2.get()):
+        alert.showwarning(title="Error de intervaluo", message='En bajo peso de niños debe haber un intervaluo entre min y max')
+    elif float(no3.get())>float(no4.get()) or float(no3.get()) == float(no4.get()):
+        alert.showwarning(title="Error de intervaluo", message='En peso normal de niños debe haber un intervaluo entre min y max')
+    elif float(no5.get())>float(no6.get()) or float(no5.get()) == float(no6.get()):
+        alert.showwarning(title="Error de intervaluo", message='En sobrepeso de niños debe haber un intervaluo entre min y max')
+    
+    elif float(na1.get())>float(na2.get()) or float(na1.get()) == float(na2.get()):
+        alert.showwarning(title="Error de intervaluo", message='En bajo peso de niñas debe haber un intervaluo entre min y max')
+    elif float(na3.get())>float(na4.get()) or float(na3.get()) == float(na4.get()):
+        alert.showwarning(title="Error de intervaluo", message='En peso normal de niñas debe haber un intervaluo entre min y max')
+    elif float(na5.get())>float(na6.get()) or float(na5.get()) == float(na6.get()):
+        alert.showwarning(title="Error de intervaluo", message='En sobrepeso de niñas debe haber un intervaluo entre min y max')
+    else:
 
-    TablaIMCNino.clear()
-    TablaIMCNino.extend([float(no1.get()),float(no2.get()),float(no3.get()),float(no4.get()),float(no5.get()),float(no6.get())])
+        TablaIMCAdulto.clear()
+        TablaIMCAdulto.extend([float(a1.get()),float(a2.get()),float(a3.get()),float(a4.get()),float(a5.get())])
 
-    TablaIMCNina.clear()
-    TablaIMCNina.extend([float(na1.get()),float(na2.get()),float(na3.get()),float(na4.get()),float(na5.get()),float(na6.get())])
+        TablaIMCNino.clear()
+        TablaIMCNino.extend([float(no1.get()),float(no2.get()),float(no3.get()),float(no4.get()),float(no5.get()),float(no6.get())])
 
-    for p in listaPacientes:
-        p.IMC= CalcularIMC(Peso=float(p.peso),Altura= int(p.altura),Edad= int(p.edad),Sexo= p.sexo) 
+        TablaIMCNina.clear()
+        TablaIMCNina.extend([float(na1.get()),float(na2.get()),float(na3.get()),float(na4.get()),float(na5.get()),float(na6.get())])
+
+        for p in listaPacientes:
+            p.IMC= CalcularIMC(Peso=float(p.peso),Altura= int(p.altura),Edad= int(p.edad),Sexo= p.sexo) 
 
 #form
 def ModificarPaciente(p):
