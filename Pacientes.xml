@@ -1,29 +1,29 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" ?>
 <ElementalNutricion>
     <cliente>
-        <identificacion>123456789</identificacion>
+        <identificación>87654</identificación>
         <nombre>Juan</nombre>
-        <apellido>Perez Chaves</apellido>
-        <telefono>12345678</telefono>
-        <correo>jpc@gmail.com</correo>
+        <apellido>Perez</apellido>
+        <telefono>67894536</telefono>
+        <correo>example@example.com</correo>
         <genero>M</genero>
-        <estaturaCM>170</estaturaCM>
-        <pesoKG>80</pesoKG>
-        <edad>22</edad>
-        <imc>032</imc>
-        <telefonoencargado></telefonoencargado>
+        <estaturaCM>136</estaturaCM>
+        <pesoKG>45</pesoKG>
+        <edad>14</edad>
+        <IMC>14.7 Normal</IMC>
+        <telefonoEncargado>45326622</telefonoEncargado>
     </cliente>
     <cliente>
-        <identificacion>987654321</identificacion>
-        <nombre>Luis</nombre>
-        <apellido>Mata Solis</apellido>
-        <telefono>87654321</telefono>
-        <correo>lms@gmail.com</correo>
+        <identificación>123456789</identificación>
+        <nombre>Byron</nombre>
+        <apellido>Sosa</apellido>
+        <telefono>56475647</telefono>
+        <correo>example@example.com</correo>
         <genero>M</genero>
-        <estaturaCM>165</estaturaCM>
-        <pesoKG>75</pesoKG>
-        <edad>10</edad>
-        <imc>28</imc>
-        <telefonoencargado>22334455</telefonoencargado>
+        <estaturaCM>177.0</estaturaCM>
+        <pesoKG>70.5</pesoKG>
+        <edad>21</edad>
+        <IMC>22.5 Peso normal</IMC>
+        <telefonoEncargado/>
     </cliente>
 </ElementalNutricion>

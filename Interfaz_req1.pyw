@@ -1,7 +1,8 @@
 from tkinter import *
 import tkinter.font as tkfont
 import tkinter.messagebox as alert
-#from xml.dom import minidom
+from tkinter import filedialog
+from xml.dom import minidom
 import xml.etree.ElementTree as ET
 import os.path
 #Clase creada para trabajar datos
@@ -9,98 +10,101 @@ from ClassCliente import Cliente, ClienteMenor
 paddingForm= 10
 
 #datos de prueba
-p = Cliente(1234,'Byron','Sosa',56475647,'example@example.com',70.5,1.77,21,'M')
-p.IMC = '26.0 Normal'
-p2= ClienteMenor(87654,'Juan','Perez',67894536,'example@example.com',45,1.36,14,'M',45326622)
+""" p = Cliente(1234,'Byron','Sosa',56475647,'example@example.com',70.5,177,21,'M')
+p.IMC = '26.0 Normal' """
+p2= ClienteMenor(87654,'Juan','Perez',67894536,'example@example.com',45,136,14,'M',45326622)
 p2.IMC= '14.7 Normal'
+
+#Almacen de datos de clientes
+listaPacientes=[]
+#listaPacientes.append(p)
+listaPacientes.append(p2)
+
+
+def validarExtension():
+    file_path=filedialog.askopenfilename()
+    if os.path.splitext(file_path)[1].lower() == ".xml":
+        # La extensión del archivo es .xml
+        if os.path.exists(file_path) and os.path.isfile(file_path):
+            return file_path
+        else:
+            # La ruta no es válida o el archivo no existe
+            alert.showerror(title='Error con el mensaje',message="El archivo no existe o la ruta es incorrecta.")
+    else:
+        # La extensión del archivo no es .xml
+        alert.showinfo(title='Error de extension',message="El archivo no es un archivo XML.")
+
+def EscribirXMl(): 
+    root = ET.Element("ElementalNutricion")
+    
+    for datoC in listaPacientes:
+        c1 = ET.SubElement(root,"cliente")
+        i1 = ET.SubElement(c1, "identificación")
+        i1.text = str(datoC.identificacion)
+        n1 = ET.SubElement(c1, "nombre")
+        n1.text = datoC.nombre
+        a1 = ET.SubElement(c1, "apellido")
+        a1.text = datoC.apellido
+        t1 = ET.SubElement(c1, "telefono")
+        t1.text = str(datoC.telefono)
+        co1 = ET.SubElement(c1, "correo")
+        co1.text = datoC.correo
+        g1 = ET.SubElement(c1, "genero")
+        g1.text = datoC.sexo
+        e1 = ET.SubElement(c1, "estaturaCM")
+        e1.text = str(datoC.altura)
+        p1 = ET.SubElement(c1, "pesoKG")
+        p1.text = str(datoC.peso)
+        ed1 = ET.SubElement(c1, "edad")
+        ed1.text = str(datoC.edad)
+        imc1 = ET.SubElement(c1, "IMC")
+        imc1.text = datoC.IMC
+        tE1 = ET.SubElement(c1, "telefonoEncargado")
+        if (hasattr(datoC,'telefonoP')):
+            tE1.text = str(datoC.telefonoP)
+            
+    
+    tree = ET.ElementTree(root)
+    #tree.write('pacientesPrueba.xml', encoding="UTF-8", xml_declaration=True, method="xml")
+    xml = minidom.parseString(ET.tostring(root, encoding='unicode'))
+
+    with open('Pacientes.xml', 'w', encoding="UTF-8") as f:
+        f.write(xml.toprettyxml(indent="    "))
+
+
+def leerXML():
+    file_path = validarExtension()
+    if (os.path.exists(file_path)):
+        tree = ET.parse(file_path)
+        root = tree.getroot()
+        
+        clients = root.findall('cliente')
+        for c in clients:
+            client = c.find('identificación')
+            for p in listaPacientes:
+                if client.text == str(p.identificacion):
+                    break
+            else:
+                datos = []
+                for child in c:
+                        datos.append(child.text)
+                        print(datos)
+                        
+                        
+                if (datos[10] == None):
+                    p = Cliente(identificacion= datos[0],nombre= datos[1],apellido= datos[2],telefono= datos[3],correo= datos[4],sexo= datos[5],altura= datos[6],peso= datos[7],edad= datos[8])
+                    p.IMC = datos[9]
+                    listaPacientes.append(p)
+                else:
+                    p = ClienteMenor(identificacion= datos[0],nombre= datos[1],apellido= datos[2],telefono= datos[3],correo= datos[4],sexo= datos[5],altura= datos[6],peso= datos[7],edad= datos[8],telefonoP= datos[10])
+                    p.IMC = datos[9]
+                    listaPacientes.append(p)
+
 
 #tablas de datos IMC
 TablaIMCAdulto = [18.5,24.9, 25.0,29.9, 30.0]
 TablaIMCNina = [12.7,18.5, 13.9,24.7, 16.9,29.4]
 TablaIMCNino = [13.0,19.1, 14.1,24.8, 16.6,29.1]
-
-#Almacen de datos de clientes
-listaPacientes=[]
-listaPacientes.append(p)
-listaPacientes.append(p2)
-
-if (os.path.exists("Pacientes.xml")):
-    tree = ET.parse("Pacientes.xml")
-    root = tree.getroot()
-
-    for children in root:
-        datos = []
-        for child in children:
-            datos.append(child.text)
-        if (datos[10] == None):
-            p = Cliente(datos[0],datos[1],datos[2],datos[3],datos[4],datos[5],datos[6],datos[7],datos[8])
-            p.IMC = datos[9]
-            listaPacientes.append(p)
-        else:
-            p = ClienteMenor(datos[0],datos[1],datos[2],datos[3],datos[4],datos[5],datos[6],datos[7],datos[8],datos[10])
-            p.IMC = datos[9]
-            listaPacientes.append(p)
-
-# document = "Clientes.xml"
-
-# doc = xml.dom.minidom.parseString(document)
-
-# #Leer
-# name = doc.getElementsByTagName("name")[0]
-# print(name.firstChild.data)
-
-# staffs = doc.getElementsByTagName("staff")
-# for staff in staffs:
-#         sid = staff.getAttribute("id")
-#         nickname = staff.getElementsByTagName("nickname")[0]
-#         salary = staff.getElementsByTagName("salary")[0]
-#         print("id:%s, nickname:%s, salary:%s" %
-#               (sid, nickname.firstChild.data, salary.firstChild.data))
-
-# #Escribir
-# def getText(nodelist): 
-#     for node in nodelist:
-#         if node.nodeType == node.TEXT_NODE:
-#             listaPacientes.append(node.data)
-#     return ''.join(listaPacientes)
-
-# def handleSlideshow(slideshow):
-#     print("<html>")
-#     handleSlideshowTitle(slideshow.getElementsByTagName("title")[0])
-#     slides = slideshow.getElementsByTagName("slide")
-#     handleToc(slides)
-#     handleSlides(slides)
-#     print("</html>")
-
-# def handleSlides(slides):
-#     for slide in slides:
-#         handleSlide(slide)
-
-# def handleSlide(slide):
-#     handleSlideTitle(slide.getElementsByTagName("title")[0])
-#     handlePoints(slide.getElementsByTagName("point"))
-
-# def handleSlideshowTitle(title):
-#     print(f"<title>{getText(title.childNodes)}</title>")
-
-# def handleSlideTitle(title):
-#     print(f"<h2>{getText(title.childNodes)}</h2>")
-
-# def handlePoints(points):
-#     print("<ul>")
-#     for point in points:
-#         handlePoint(point)
-#     print("</ul>")
-
-# def handlePoint(point):
-#     print(f"<li>{getText(point.childNodes)}</li>")
-
-# def handleToc(slides):
-#     for slide in slides:
-#         title = slide.getElementsByTagName("title")[0]
-#         print(f"<p>{getText(title.childNodes)}</p>")
-
-# handleSlideshow(doc)
 
 def TablaIMC(datos, sexo, edad):
     try:
@@ -144,8 +148,8 @@ def TablaIMC(datos, sexo, edad):
 def CalcularIMC(Peso,Altura,Edad,Sexo):
     #Adultos 20 o más años, Peso(kg) ÷ (Altura(cm))Elevado a 2 = Resultado
     #Niños y Adolecentes 2 a 19 años, 
-
-    Resultado = round(Peso/(Altura**2),2)
+    alt = Altura*(1.0/100)
+    Resultado = round(Peso/(alt**2),2)
     
     #Se llama la tabla para traer los datos y hacer la comparacion
     dato = TablaIMC(Resultado,Sexo,Edad)
@@ -154,7 +158,7 @@ def CalcularIMC(Peso,Altura,Edad,Sexo):
         #18.5 – 24.9	Normal
         #25.0 – 29.9	Sobrepeso
         #30.0 o más	Obesidad
-    return f'{Resultado} / {dato}'
+    return f'{Resultado} {dato}'
 
 def limitador(entry_text, limit):
     if len(entry_text.get()) > 0:
@@ -193,9 +197,10 @@ def AgregarCliente(ced,nom, ape,tel,peso,alt,edad,sexo,frm,correo, telE=''):
                 raise "Revise los datos"
             else:
                 per = ClienteMenor(ced,nom,ape,int(tel),correo,float(peso),float(alt),int(edad),sexo,telE)
+
         else:
             per = Cliente(ced,nom,ape,int(tel),correo,float(peso),float(alt),int(edad),sexo)
-        per.IMC= CalcularIMC(Peso=float(peso),Altura= float(alt),Edad= int(edad),Sexo= sexo) 
+        per.IMC= CalcularIMC(Peso=float(peso),Altura= int(alt),Edad= int(edad),Sexo= sexo) 
         listaPacientes.append(per)
         alert.showinfo(title='Resultado', message="Usuario guardado con exito")
         frm.destroy()
@@ -597,7 +602,7 @@ def nuevoPaciente():
 
         txttelEncargado= Entry(formPaciente, font=fontText, textvariable = telefE)
         txttelEncargado.grid(column=2,row=10, columnspan=2)
-        telefE.trace("w", lambda *args: limitador(telefE,9))
+        telefE.trace("w", lambda *args: limitador(telefE,8))
         
         btnAceptar.grid_forget()
         btnAceptarM= Button(formPaciente, text="Aceptar", command=lambda:AgregarCliente(
@@ -718,7 +723,7 @@ def ModificarTablaIMC(li1, li2, li3):
 
 #definicion form principal
 root= Tk()
-root.geometry("600x400")
+#root.geometry("600x400")
 root.resizable(False,False)
 root.title("Pacientes - Elemental Nutrición")
 
@@ -740,15 +745,22 @@ btnRevisarPaciente.grid(column=3, row=1, padx=18, pady=10)
 
 #Modificar / eliminar Paciente
 btnModificarPaciente= Button(root, text="Modificar Paciente",command=ConsultarPacienteMod, width=14, height=5, font=fontText, padx=10, border=5, borderwidth=3)
-btnModificarPaciente.grid(column=2, row=2, padx=18)
+btnModificarPaciente.grid(column=2, row=2, padx=18, pady=10)
 
 #Modificar datos de IMC
 btnModificarPaciente= Button(root, text="Modificar Tabla IMC",command= lambda:ModificarTablaIMC(TablaIMCAdulto, TablaIMCNino, TablaIMCNina), width=14, height=5, font=fontText, padx=10, border=5, borderwidth=3)
-btnModificarPaciente.grid(column=3, row=2, padx=18)
+btnModificarPaciente.grid(column=3, row=2, padx=18, pady=10)
+
+#Seccion de archivos xml
+lblTitulo= Label(root, text="Control de Pacientes",font=fontTitle)
+lblTitulo.grid(column=2, row=0, pady=15, columnspan=3)
 
 #boton generar xml
-#falta command
-btnGenerarXML= Button(root, text="Exportar\nPacientes", width=10, height=2, font=fontText, padx=10, border=5, borderwidth=3)
-btnGenerarXML.grid(column=4, row=2, padx=18, sticky="S")
+btnGenerarXML= Button(root, text="Exportar\nPacientes",command=EscribirXMl, width=14, height=5, font=fontText, padx=10, border=5, borderwidth=3)
+btnGenerarXML.grid(column=2, row=3, padx=18, pady=10)
+
+#Listo
+btnLeerXML= Button(root, text="Leer\nPacientes",command=leerXML, width=14, height=5, font=fontText, padx=10, border=5, borderwidth=3)
+btnLeerXML.grid(column=3, row=3, padx=18,pady=10)
 
 root.mainloop()
