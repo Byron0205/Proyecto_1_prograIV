@@ -12,13 +12,14 @@ paddingForm= 10
 #datos de prueba
 """ p = Cliente(1234,'Byron','Sosa',56475647,'example@example.com',70.5,177,21,'M')
 p.IMC = '26.0 Normal' """
-p2= ClienteMenor(87654,'Juan','Perez',67894536,'example@example.com',45,136,14,'M',45326622)
-p2.IMC= '14.7 Normal'
+""" p2= ClienteMenor(87654,'Juan','Perez',67894536,'example@example.com',45,136,14,'M',45326622)
+p2.IMC= '14.7 Normal' """
+Ruta= 'IMC_CR.xml'
 
 #Almacen de datos de clientes
 listaPacientes=[]
 #listaPacientes.append(p)
-listaPacientes.append(p2)
+#listaPacientes.append(p2)
 
 
 def validarExtension():
@@ -35,6 +36,7 @@ def validarExtension():
         alert.showinfo(title='Error de extension',message="El archivo no es un archivo XML.")
 
 def EscribirXMl(): 
+    file_path = filedialog.asksaveasfilename(defaultextension=".xml", filetypes=[("Archivo de tipo xml",'.xml')])
     root = ET.Element("ElementalNutricion")
     
     for datoC in listaPacientes:
@@ -68,7 +70,7 @@ def EscribirXMl():
     #tree.write('pacientesPrueba.xml', encoding="UTF-8", xml_declaration=True, method="xml")
     xml = minidom.parseString(ET.tostring(root, encoding='unicode'))
 
-    with open('Pacientes.xml', 'w', encoding="UTF-8") as f:
+    with open(file_path, 'w', encoding="UTF-8") as f:
         f.write(xml.toprettyxml(indent="    "))
 
 

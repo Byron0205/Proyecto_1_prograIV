@@ -1,0 +1,29 @@
+<?xml version="1.0" ?>
+<ElementalNutricion>
+    <cliente>
+        <identificación>123457899</identificación>
+        <nombre>Byron</nombre>
+        <apellido>Sosa</apellido>
+        <telefono>12345678</telefono>
+        <correo>ex@ex.com</correo>
+        <genero>M</genero>
+        <estaturaCM>178</estaturaCM>
+        <pesoKG>60.0</pesoKG>
+        <edad>22</edad>
+        <IMC>18.94 Peso normal</IMC>
+        <telefonoEncargado/>
+    </cliente>
+    <cliente>
+        <identificación>12346789</identificación>
+        <nombre>ana</nombre>
+        <apellido>solis</apellido>
+        <telefono>12355664</telefono>
+        <correo>ex@ex.com</correo>
+        <genero>F</genero>
+        <estaturaCM>167</estaturaCM>
+        <pesoKG>70.0</pesoKG>
+        <edad>17</edad>
+        <IMC>25.1 Sobrepeso</IMC>
+        <telefonoEncargado>15432654</telefonoEncargado>
+    </cliente>
+</ElementalNutricion>
